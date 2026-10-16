@@ -14,6 +14,8 @@
 
   const UI = {
     en: {
+      docTitle: "Worldlines: compare world history across countries and regions",
+      docDesc: "An atlas of world history in the style of Mondrian. Compare 26 countries and 8 regions side by side across 15,000 years: 218 turning points, 348 states and dynasties, and who ruled where in any year. In English and Chinese.",
       brand: "Worldlines", navAtlas: "Atlas", navLong: "Long view", navSlice: "Year slice", navLearn: "How to learn", search: "Search",
       kicker: "A horizontal atlas of world history",
       dek: "History is not one road. It is <strong>many places living at once</strong>. Move across time; look down to compare worlds.",
@@ -59,6 +61,8 @@
       bce: "BCE", ce: "CE", now: "today", close: "Close", zoom: "Zoom"
     },
     zh: {
+      docTitle: "世界线：横向比较各国与各地区的世界史图谱",
+      docDesc: "蒙德里安风格的世界史图谱。横向比较26个国家与8个地区一万五千年的历史：218个转折点、348个政权与王朝，以及任意一年谁统治着哪里。中英双语。",
       brand: "世界线", navAtlas: "图谱", navLong: "长时段", navSlice: "年份切片", navLearn: "学习方法", search: "搜索",
       kicker: "一部横向展开的世界史图谱",
       dek: "历史不是一条路，而是<strong>许多地方同时在生活</strong>。横向穿越时间，纵向比较世界。",
@@ -284,7 +288,10 @@
   /* ── Static copy ───────────────────────────── */
   function applyStatic() {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-    document.title = lang === "zh" ? "世界线 · Worldlines" : "Worldlines";
+    document.title = t("docTitle");
+    $('meta[name="description"]').setAttribute("content", t("docDesc"));
+    $('link[rel="canonical"]').setAttribute("href", "https://worldlines.geekplux.org/" + (lang === "zh" ? "?lang=zh" : ""));
+    $("h1").setAttribute("aria-label", t("brand"));
     $$("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
     $$("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
@@ -811,7 +818,7 @@
   lv.addEventListener("mousemove", onLvMove);
   lv.addEventListener("mouseleave", () => { $("#lv-cursor").hidden = true; $("#lv-tip").hidden = true; });
   let resizeT = 0;
-  addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { fitLong(); renderSliceStatic(); }, 150); });
+  addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if ($("#lv")) fitLong(); if ($("#scrub-band")) renderSliceStatic(); }, 150); });
 
   /* Drag the atlas sideways with a mouse */
   const sc = $("#tl-scroll");

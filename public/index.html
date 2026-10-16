@@ -3,10 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Worldlines</title>
-<meta name="description" content="A bilingual (English / 中文) atlas of world history in the style of Mondrian: compare regions and countries side by side across 15,000 years, chapter by chapter or one year at a time.">
+<title>Worldlines: compare world history across countries and regions</title>
+<meta name="description" content="An atlas of world history in the style of Mondrian. Compare 26 countries and 8 regions side by side across 15,000 years: 218 turning points, 348 states and dynasties, and who ruled where in any year. In English and Chinese.">
+<link rel="canonical" href="https://worldlines.geekplux.org/">
+<link rel="alternate" hreflang="en" href="https://worldlines.geekplux.org/">
+<link rel="alternate" hreflang="zh-Hans" href="https://worldlines.geekplux.org/?lang=zh">
+<link rel="alternate" hreflang="x-default" href="https://worldlines.geekplux.org/">
 <meta name="theme-color" content="#fffdf7">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' fill='%23141414'/%3E%3Crect x='2' y='2' width='22' height='5' fill='%23d52b1e'/%3E%3Crect x='2' y='9' width='8' height='6' fill='%23fffdf7'/%3E%3Crect x='12' y='9' width='12' height='6' fill='%231d4ed8'/%3E%3Crect x='2' y='17' width='15' height='7' fill='%23f3c623'/%3E%3Crect x='19' y='17' width='5' height='7' fill='%23fffdf7'/%3E%3C/svg%3E">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Worldlines">
+<meta property="og:url" content="https://worldlines.geekplux.org/">
+<meta property="og:title" content="Worldlines: compare world history across countries and regions">
+<meta property="og:description" content="Compare 26 countries and 8 regions across 15,000 years, chapter by chapter or one year at a time. A Mondrian-style atlas in English and Chinese.">
+<meta property="og:image" content="https://worldlines.geekplux.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Worldlines: a horizontal atlas of world history, with a blue, yellow and red Mondrian-style globe.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Worldlines: compare world history across countries and regions">
+<meta name="twitter:description" content="Compare 26 countries and 8 regions across 15,000 years, chapter by chapter or one year at a time.">
+<meta name="twitter:image" content="https://worldlines.geekplux.org/og.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Worldlines",
+  "alternateName": "世界线",
+  "url": "https://worldlines.geekplux.org/",
+  "description": "A bilingual atlas of world history for comparing 26 countries and 8 regions across 15,000 years: turning points, states and dynasties, and who ruled where in any year.",
+  "inLanguage": ["en", "zh-Hans"],
+  "isAccessibleForFree": true,
+  "about": [{ "@type": "Thing", "name": "World history" }, { "@type": "Thing", "name": "Comparative history" }, { "@type": "Thing", "name": "Timeline" }],
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "creator": { "@type": "Person", "name": "geekplux", "url": "https://github.com/geekplux" },
+  "codeRepository": "https://github.com/geekplux/worldlines"
+}
+</script>
 <script>
 /* Google Analytics 4 with Consent Mode v2, on the production domain only. Until the visitor accepts in
    the consent bar (assets/app.js), analytics_storage stays "denied": GA sends cookieless pings, no IDs. */
@@ -26,7 +64,7 @@
   document.head.appendChild(s);
 })();
 </script>
-<link rel="stylesheet" href="assets/styles.css?v=7c5b75cd9b">
+<link rel="stylesheet" href="assets/styles.css?v=bfa050ea18">
 </head>
 <body>
 <header class="topbar">
@@ -54,7 +92,7 @@
     <div class="hero-copy">
       <p class="eyebrow" data-i18n="kicker">A horizontal atlas of world history</p>
       <div>
-        <h1><span data-i18n="h1a">WORLD</span><span class="red" data-i18n="h1b">LINES</span></h1>
+        <h1 aria-label="Worldlines"><span data-i18n="h1a" aria-hidden="true">WORLD</span><span class="red" data-i18n="h1b" aria-hidden="true">LINES</span></h1>
         <p class="hero-dek" data-i18n-html="dek">History is not one road. It is <strong>many places living at once.</strong> Move across time; look down to compare worlds.</p>
       </div>
       <div class="hero-meta">
@@ -74,6 +112,23 @@
     <div><b data-i18n="m2t">Compare ↓ down</b><p data-i18n="m2">Events on the same vertical line happened at about the same time.</p></div>
     <div><b data-i18n="m3t">Slice ■ a year</b><p data-i18n="m3">Stop the clock and see who ruled where, in every place you are comparing.</p></div>
   </section>
+
+  <noscript>
+    <section class="noscript">
+      <h2>The atlas needs JavaScript</h2>
+      <p>Worldlines draws its timelines in the browser. Turn on JavaScript to compare 26 countries and 8 regions through 218 turning points and 348 states. The eight chapters are:</p>
+      <ol>
+        <li><b>01 · Origins &amp; Settlements</b> <span>c. 13,000–3,000 BCE</span><p>Humans reshape landscapes, domesticate plants and animals, and build enduring communities, by many routes rather than one agricultural revolution.</p></li>
+        <li><b>02 · Cities, States &amp; Writing</b> <span>c. 3,500–500 BCE</span><p>Dense settlements, record-keeping, organised religion, taxation, armies and long-distance exchange transform power.</p></li>
+        <li><b>03 · Classical Worlds</b> <span>c. 600 BCE–600 CE</span><p>Large empires and durable schools of thought take shape across Eurasia, Africa and the Americas.</p></li>
+        <li><b>04 · Connected Worlds</b> <span>500–1500 CE</span><p>Trade, pilgrimage, scholarship, conquest and migration bind distant societies, while disease and war travel too.</p></li>
+        <li><b>05 · Oceans &amp; Gunpowder</b> <span>1450–1750</span><p>Ocean routes and expanding states create global circuits of silver, crops, coerced labour, texts and weapons.</p></li>
+        <li><b>06 · Industry &amp; Revolutions</b> <span>1750–1914</span><p>Fossil-fuelled industry, political revolution, nationalism, abolition, capitalism and imperialism reorder the planet.</p></li>
+        <li><b>07 · Crisis &amp; World Wars</b> <span>1914–1945</span><p>Total war, mass politics, depression, fascism, genocide, anticolonial struggle and revolution break the old orders.</p></li>
+        <li><b>08 · A Decolonising World</b> <span>1945–today</span><p>New nations, Cold War rivalry, rights movements, digital networks and ecological limits define an unfinished present.</p></li>
+      </ol>
+    </section>
+  </noscript>
 
   <section class="atlas" id="atlas">
     <nav class="toolbar" aria-label="Chapters">
@@ -213,6 +268,6 @@
 <script src="data/core.js"></script>
 <script src="data/polities.js"></script>
 <script src="data/events.js"></script>
-<script src="assets/app.js?v=b677e7e62c"></script>
+<script src="assets/app.js?v=8953094fdd"></script>
 </body>
 </html>

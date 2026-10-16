@@ -122,6 +122,13 @@ button { cursor: pointer; }
 .manifesto p { color: var(--muted); font-size: 14px; }
 @media (max-width: 760px) { .manifesto { grid-template-columns: 1fr; } .manifesto > div { border-right: 0; border-bottom: 1px solid var(--ink); } .manifesto > div:last-child { border-bottom: 0; } }
 
+/* ── Without JavaScript: the chapter list, so the page still says what it is ── */
+.noscript { padding: 40px var(--gutter-r) 48px var(--gutter); border-bottom: 2px solid var(--ink); max-width: 980px; }
+.noscript h2 { font: 900 36px/1 var(--f-display); letter-spacing: -.03em; margin-bottom: 12px; }
+.noscript ol { margin: 20px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.noscript li span { font: 700 12px/1 var(--f-mono); color: var(--blue-deep); margin-left: 8px; }
+.noscript li p { color: var(--muted); font-size: 14px; }
+
 /* ── Atlas: chapter toolbar ── */
 .atlas { position: relative; margin-top: 56px; border-top: 2px solid var(--ink); }
 .toolbar { position: sticky; top: var(--bar-h); z-index: 30; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 10px var(--gutter-r) 10px var(--gutter); background: var(--ink); color: var(--white); }

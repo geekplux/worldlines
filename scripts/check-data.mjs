@@ -83,6 +83,14 @@ for (const e of D.events) {
 for (const c of D.chapters) for (const r of D.regions)
   if (!D.events.some((e) => e.chapter === c.id && e.region === r.id)) warn(`chapter "${c.id}"`, `no event in region ${r.id}`);
 
+/* The page's description, social card text and JSON-LD quote these counts; keep them true */
+const PAGE = readFileSync(fileURLToPath(new URL("../public/index.html", import.meta.url)), "utf8");
+const APP = readFileSync(fileURLToPath(new URL("../public/assets/app.js", import.meta.url)), "utf8");
+for (const [n, en, zh] of [[places.size, "countries", "个国家"], [D.regions.length, "regions", "个地区"], [evIds.size, "turning points", "个转折点"], [polCount, "states", "个政权"]]) {
+  for (const m of PAGE.matchAll(new RegExp(`(\\d+) ${en}\\b`, "g"))) if (+m[1] !== n) fail("public/index.html", `says "${m[0]}", data has ${n}`);
+  for (const m of APP.matchAll(new RegExp(`(\\d+)${zh}`, "g"))) if (+m[1] !== n) fail("public/assets/app.js", `says "${m[0]}", data has ${n}`);
+}
+
 for (const s of staleStamps()) fail("public/index.html", `${s} has a stale ?v= stamp: run node scripts/stamp-assets.mjs`);
 
 if (process.argv.includes("--warnings")) for (const w of warnings) console.warn("· " + w);
