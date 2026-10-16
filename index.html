@@ -92,51 +92,52 @@
     <div class="tl-scroll" id="tl-scroll"><div class="stage" id="stage"></div></div>
   </section>
 
-  <section class="block" id="long">
-    <div class="wrap pad">
-      <div class="head">
-        <h2 data-i18n="longTitle">Fifteen thousand years, one block per state</h2>
-        <p data-i18n="longLede">Each row is a place; each block is the state, dynasty, empire or colonial power that held it. Thick rules mark where the time scale changes. Hover to read the year, select to freeze it below, and select a place name to add it to your comparison.</p>
+  <section class="view" id="long">
+    <header class="sec-intro">
+      <p class="sec-no" data-i18n="longNo">Long view</p>
+      <h2 data-i18n="longTitle">Fifteen thousand years, one block per state</h2>
+      <div class="sec-note"><p class="range" id="long-range"></p><p data-i18n="longLede">Each row is a place and each block is the state that held it. The places you compare open up; the rest stay as thin strips. Blocks in full colour are the states ruling in the year you have frozen.</p></div>
+    </header>
+    <div class="view-bar">
+      <div class="seg" role="group" id="long-seg">
+        <button type="button" data-long="compact" data-i18n="lvCompact">Compact</button>
+        <button type="button" data-long="open" data-i18n="lvOpen">Open every row</button>
       </div>
-      <div class="long-ctl">
-        <div class="seg" role="group" id="long-seg">
-          <button type="button" data-long="all" data-i18n="longAll">All places</button>
-          <button type="button" data-long="cmp" data-i18n="longCmp">Only my comparison</button>
-        </div>
-        <div class="legend" id="kind-legend"></div>
-      </div>
-      <div class="lv-scroll"><div class="lv" id="lv"></div></div>
-      <p class="hint" data-i18n="lvHint">Scroll sideways to see the whole span →</p>
+      <div class="legend" id="kind-legend"></div>
+      <p class="view-hint" data-i18n="lvHelp">Hover to read a year · select to freeze it · select a name to compare it</p>
     </div>
+    <div class="lv-scroll"><div class="lv" id="lv"></div></div>
   </section>
 
-  <section class="block" id="slice">
-    <div class="wrap pad">
-      <div class="head">
-        <h2 data-i18n="sliceTitle">The world in one year</h2>
-        <p data-i18n="sliceLede">Pick a year. Every place you compare shows who ruled it, how long that state had lasted and how long it would last, and what happened nearby in time.</p>
+  <section class="view" id="slice">
+    <header class="sec-intro">
+      <p class="sec-no" data-i18n="sliceNo">Year slice</p>
+      <h2 data-i18n="sliceTitle">The world in one year</h2>
+      <div class="sec-note"><p class="range" id="slice-range"></p><p data-i18n="sliceLede">Stop the clock. Each place shows the state that held it, where that year falls in the state’s life, what came before and after, and what happened nearby in time.</p></div>
+    </header>
+    <div class="slicer">
+      <div class="year-big" id="year-big" aria-live="polite"></div>
+      <div class="scrub">
+        <div class="scrub-band" id="scrub-band" aria-hidden="true"></div>
+        <input type="range" id="year-range" min="0" max="1000" step="1" aria-label="Year">
+        <div class="scrub-marks" id="year-presets"></div>
       </div>
-      <div class="slicer">
-        <div class="year-big" id="year-big" aria-live="polite"></div>
-        <div class="slicer-ctl">
-          <input type="range" id="year-range" min="0" max="1000" step="1" aria-label="Year">
-          <div class="steps-row">
-            <button type="button" class="chip" data-step="-100">−100</button>
-            <button type="button" class="chip" data-step="-10">−10</button>
-            <button type="button" class="chip" data-step="-1">−1</button>
-            <button type="button" class="chip" data-step="1">+1</button>
-            <button type="button" class="chip" data-step="10">+10</button>
-            <button type="button" class="chip" data-step="100">+100</button>
-            <span class="presets" id="year-presets"></span>
-          </div>
-          <div class="seg" role="group" id="slice-seg">
-            <button type="button" data-slice="cmp" data-i18n="longCmp">Only my comparison</button>
-            <button type="button" data-slice="all" data-i18n="longAll">All places</button>
-          </div>
+      <div class="slicer-side">
+        <div class="stepper" role="group" aria-label="Step">
+          <button type="button" data-dir="-1" aria-label="Earlier">‹</button>
+          <span id="step-lbl"></span>
+          <button type="button" data-dir="1" aria-label="Later">›</button>
+        </div>
+        <div class="seg" role="group" id="slice-seg">
+          <button type="button" data-slice="cmp" data-i18n="sliceCmp">My comparison</button>
+          <button type="button" data-slice="all" data-i18n="sliceAll">All places</button>
         </div>
       </div>
-      <div class="meanwhile-strip" id="slice-world"></div>
+    </div>
+    <p class="slice-sum" id="slice-sum"></p>
+    <div class="slice-body">
       <div class="slice-grid" id="slice-grid"></div>
+      <aside class="mw-col"><p class="micro" id="mw-lbl"></p><div class="mw-list" id="slice-world"></div></aside>
     </div>
   </section>
 

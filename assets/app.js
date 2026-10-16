@@ -28,13 +28,18 @@
       axisCorner: (m) => m === "regions" ? "Regions ↓<br>Time →" : "Countries ↓<br>Time →",
       emptyLane: "No hinge point here<br>in this chapter",
       remove: "Remove",
-      longTitle: "Fifteen thousand years, one block per state",
-      longLede: "Each row is a place; each block is the state, dynasty, empire or colonial power that held it. Thick rules mark where the time scale changes. Hover to read the year, select to freeze it below, and select a place name to add it to your comparison.",
-      longAll: "All places", longCmp: "Only my comparison", lvHint: "Scroll sideways to see the whole span →", lvCorner: "Places", legRule: "Time scale changes", legDot: "Event",
-      inCmp: "in", addCmp: "+", seeBelow: "see below ↓", clickFreeze: "Select to freeze this year",
-      sliceTitle: "The world in one year",
-      sliceLede: "Pick a year. Every place you compare shows who ruled it, how long that state had lasted and how long it would last, and what happened nearby in time.",
-      meanwhile: (w) => `Meanwhile · ±${w} yrs`, within: (w) => `Within ±${w} years`, nothingNear: "Nothing listed this close.", nearest: "Nearest",
+      longNo: "Long view", longTitle: "Fifteen thousand years, one block per state",
+      longLede: "Each row is a place and each block is the state that held it. The places you compare open up; the rest stay as thin strips. Blocks in full colour are the states ruling in the year you have frozen.",
+      longRange: (n, q) => `13,000 BCE → today · ${n} places · ${q} states`,
+      lvCompact: "Compact", lvOpen: "Open every row", lvHelp: "Hover to read a year · select to freeze it · select a name to compare it", lvCorner: "Scale changes by chapter",
+      clickFreeze: "Select to freeze this year",
+      sliceNo: "Year slice", sliceTitle: "The world in one year",
+      sliceLede: "Stop the clock. Each place shows the state that held it, where that year falls in the state’s life, what came before and after, and what happened nearby in time.",
+      sliceRange: (n) => `Drag the line, pick a date or step with ‹ › · ${n} places`, sliceCmp: "My comparison", sliceAll: "All places",
+      step: (n) => `${n} yr${n > 1 ? "s" : ""}`,
+      sum: (y, n) => `<span class="lead">In ${y}, across ${n} places:</span>`,
+      kindShort: { s: "home-grown states", d: "divided", f: "ruled from outside", c: "cultures or eras", none: "no state recorded" },
+      meanwhile: (w) => `Meanwhile, ±${w} years`, nothingNear: "Nothing listed this close.", nearest: "Nearest",
       noState: "No state recorded", noStateBody: "No single polity is listed for this place in this year.",
       yearOf: (a, b) => b ? `Year ${a} of ${b}` : `Year ${a}, still standing`, before: "Before", after: "Next",
       learnTitle: "How to learn the whole world without flattening it.",
@@ -67,13 +72,18 @@
       axisCorner: (m) => m === "regions" ? "地区 ↓<br>时间 →" : "国家 ↓<br>时间 →",
       emptyLane: "本章节中<br>此处暂无转折点",
       remove: "移除",
-      longTitle: "一万五千年，一个政权一块色",
-      longLede: "每一行是一个地方，每一块是统治过它的国家、王朝、帝国或殖民政权。粗黑线标出时间比例尺的变化处。悬停可读出年份，点击可在下方定格该年，点击地名可把它加入比较。",
-      longAll: "全部地方", longCmp: "只看我的比较", lvHint: "左右滑动查看完整时间跨度 →", lvCorner: "地方", legRule: "比例尺变化处", legDot: "事件",
-      inCmp: "已选", addCmp: "+", seeBelow: "见下方 ↓", clickFreeze: "点击定格这一年",
-      sliceTitle: "同一年的世界",
-      sliceLede: "选一个年份。你比较的每个地方都会显示：当时由谁统治、这个政权已经延续了多久、还将延续多久，以及时间上相近的事件。",
-      meanwhile: (w) => `与此同时 · 前后${w}年`, within: (w) => `前后${w}年内`, nothingNear: "这么近的时间内没有收录事件。", nearest: "最近的事件",
+      longNo: "长时段", longTitle: "一万五千年，一个政权一块色",
+      longLede: "每一行是一个地方，每一块是统治它的政权。你比较的地方会展开，其余的收成细条。满色的色块，是你定格的那一年正在统治的政权。",
+      longRange: (n, q) => `公元前13000年 → 今天 · ${n}个地方 · ${q}个政权`,
+      lvCompact: "紧凑", lvOpen: "展开全部", lvHelp: "悬停读出年份 · 点击定格 · 点击地名加入比较", lvCorner: "各章节比例尺不同",
+      clickFreeze: "点击定格这一年",
+      sliceNo: "年份切片", sliceTitle: "同一年的世界",
+      sliceLede: "把时钟停下。每个地方都会显示当时统治它的政权、这一年处在该政权生命中的哪个位置、前后由谁承接，以及时间上相近的事件。",
+      sliceRange: (n) => `拖动竖线、点选年份，或用 ‹ › 步进 · ${n}个地方`, sliceCmp: "我的比较", sliceAll: "全部地方",
+      step: (n) => `${n}年`,
+      sum: (y, n) => `<span class="lead">${y}，${n}个地方中：</span>`,
+      kindShort: { s: "本土政权", d: "分裂", f: "外来统治", c: "文化或时期", none: "无政权记录" },
+      meanwhile: (w) => `与此同时，前后${w}年`, nothingNear: "这么近的时间内没有收录事件。", nearest: "最近的事件",
       noState: "暂无政权记录", noStateBody: "本图谱未收录此地这一年的单一政权。",
       yearOf: (a, b) => b ? `立国第${a}年，共${b}年` : `立国第${a}年，延续至今`, before: "此前", after: "此后",
       learnTitle: "如何学习整个世界，而不把它压扁。",
@@ -105,7 +115,7 @@
   ];
   const DEFAULT_CMP = ["china", "india", "iran", "italy", "britain", "mexico"];
   const ZOOMS = [0.75, 1, 1.5, 2, 3];
-  const YEAR_PRESETS = [-2500, -500, 1, 800, 1250, 1492, 1648, 1789, 1871, 1914, 1945, 1989, 2026];
+  const YEAR_PRESETS = [-10000, -2500, -500, 1, 800, 1250, 1492, 1648, 1789, 1914, 1945, 1989, 2026];
   const MAX_CMP = 10;
 
   /* ── State ─────────────────────────────────── */
@@ -121,7 +131,7 @@
   if (!cmp.length) cmp = DEFAULT_CMP.slice();
   let zoomIdx = Math.max(0, ZOOMS.indexOf(+store.get("zoom")));
   if (ZOOMS.indexOf(+store.get("zoom")) < 0) zoomIdx = 1;
-  let longMode = store.get("long") === "cmp" ? "cmp" : "all";
+  let longMode = store.get("long") === "open" ? "open" : "compact";
   let sliceMode = store.get("slice") === "all" ? "all" : "cmp";
   let chIdx = 0;
   let theme = "all";
@@ -383,44 +393,68 @@
 
   /* ── Long view ─────────────────────────────── */
   const LV_TICKS = [-13000, -6000, -3500, -600, 1, 500, 1000, 1450, 1600, 1750, 1850, 1914, 1945, 1990, NOW];
+  const pct = (y) => (lx(y) * 100).toFixed(3) + "%";
+  const segIndex = (y) => Math.max(0, SEG.findIndex((s) => y >= s[0] && y < s[1]) === -1 ? SEG.length - 1 : SEG.findIndex((s) => y >= s[0] && y < s[1]));
+  /* Chapter band: each cell is one stretch of the scale, the chapter of the frozen year is yellow */
+  const bandHtml = (cls) => SEG.map((s, i) => `<button type="button" class="${cls}${i === segIndex(year) ? " on" : ""}" data-ch="${i}" data-scroll="1" style="left:${pct(s[0])};width:calc(${pct(s[1])} - ${pct(s[0])})" title="${esc(p(CH[i].title))} · ${esc(p(CH[i].range))}"><span>${esc(p(CH[i].short))}</span></button>`).join("");
   function renderLong() {
-    const pct = (y) => (lx(y) * 100).toFixed(3) + "%";
-    let h = `<div class="lv-rules" aria-hidden="true">${SEG.slice(1).map((s) => `<span class="r" style="left:${pct(s[0])}"></span>`).join("")}</div>`;
-    h += `<div class="lv-row lv-axis"><div class="lv-name">${esc(t("lvCorner"))}</div><div class="lv-track">`;
-    h += SEG.map((s, i) => `<button type="button" class="lv-ch" data-ch="${i}" data-scroll="1" style="left:${pct(s[0])};width:calc(${pct(s[1])} - ${pct(s[0])})" title="${esc(p(CH[i].title))} · ${esc(p(CH[i].range))}">${esc(p(CH[i].short))}</button>`).join("");
+    let h = `<div class="lv-row lv-axis"><div class="lv-name">${esc(t("lvCorner"))}</div><div class="lv-track">${bandHtml("lv-ch")}`;
     LV_TICKS.forEach((y, i) => { h += `<span class="lv-tick${i === 0 ? " l" : i === LV_TICKS.length - 1 ? " r" : ""}" style="left:${pct(y)}">${esc(fmtAxis(y))}</span>`; });
     h += `</div></div>`;
     const row = (pl) => {
-      const r = RGB[pl.region], list = POL[pl.id] || [], isIn = cmp.includes(pl.id);
-      const blocks = list.map((q, i) => {
-        const l = lx(q.s) * 100, w = lx(q.e) * 100 - l;
-        return `<span class="lv-blk k-${q.k}${i % 2 ? " alt" : ""}" data-pi="${i}" style="left:${l.toFixed(3)}%;width:${w.toFixed(3)}%">${w > 3.2 ? `<span>${esc(p(q.n))}</span>` : ""}</span>`;
-      }).join("");
-      const dots = EV.filter((e) => e.place === pl.id).map((e) =>
-        `<button type="button" class="lv-dot${theme !== "all" && e.theme !== theme ? " dim" : ""}" data-ev="${e.id}" style="left:${pct(e.year)}" aria-label="${esc(p(e.title))}, ${esc(p(e.date))}"></button>`).join("");
-      return `<div class="lv-row${isIn ? " in" : ""}" data-place="${pl.id}" style="${regionVars(r)}">
-        <button type="button" class="lv-name" data-toggle="${pl.id}" aria-pressed="${isIn}"><span class="sw"></span><span>${esc(p(pl.name))}</span><span class="pin" aria-hidden="true">${isIn ? "✓" : "+"}</span></button>
+      const r = RGB[pl.region], list = POL[pl.id] || [], isIn = cmp.includes(pl.id), open = isIn || longMode === "open";
+      const blocks = list.map((q, i) => `<span class="lv-blk k-${q.k}" data-pi="${i}" style="left:${pct(q.s)};width:calc(${pct(q.e)} - ${pct(q.s)})">${open ? `<span>${esc(p(q.n))}</span>` : ""}</span>`).join("");
+      const dots = open ? EV.filter((e) => e.place === pl.id).map((e) =>
+        `<button type="button" class="lv-dot${theme !== "all" && e.theme !== theme ? " dim" : ""}" data-ev="${e.id}" style="left:${pct(e.year)}" aria-label="${esc(p(e.title))}, ${esc(p(e.date))}"></button>`).join("") : "";
+      return `<div class="lv-row${open ? " open" : ""}${isIn ? " in" : ""}" data-place="${pl.id}" style="${regionVars(r)}">
+        <button type="button" class="lv-name" data-toggle="${pl.id}" aria-pressed="${isIn}"><span class="sw"></span><span class="nm">${esc(p(pl.name))}</span><span class="pin" aria-hidden="true">${isIn ? "−" : "+"}</span></button>
         <div class="lv-track">${blocks}${dots}</div></div>`;
     };
-    if (longMode === "cmp") h += cmp.map((pid) => row(PLB[pid])).join("");
-    else RG.forEach((r) => {
+    RG.forEach((r) => {
       const pls = PL.filter((x) => x.region === r.id);
       if (!pls.length) return;
-      h += `<div class="lv-row lv-reg" style="--c:${r.color}"><div class="lv-name"><span class="sw"></span>${esc(p(r.name))}</div><div class="lv-track"></div></div>` + pls.map(row).join("");
+      h += `<div class="lv-row lv-reg" style="--c:${r.color}"><div class="lv-name"><span class="sw"></span>${esc(p(r.name))}</div></div>` + pls.map(row).join("");
     });
-    h += `<div class="lv-cursor fixed" id="lv-fixed" style="left:calc(var(--lw) + (100% - var(--lw)) * ${lx(year)})"><b>${esc(fmtAxis(year))}</b></div><div class="lv-cursor" id="lv-cursor" hidden><b></b></div>`;
+    h += `<div class="lv-cursor fixed" id="lv-fixed"><b></b></div><div class="lv-cursor" id="lv-cursor" hidden><b></b></div>`;
     $("#lv").innerHTML = h;
-    /* Hide tick labels that would collide (the deep-time segment is narrow on small screens) */
+    $$("#long-seg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.long === longMode)));
+    $("#kind-legend").innerHTML = KD.map((k) => `<span><i class="k-${k.id}"></i>${esc(p(k.name))}</span>`).join("");
+    $("#long-range").textContent = t("longRange")(PL.length, POL_COUNT);
+    markNow();
+    fitLong();
+    /* On narrow screens, open with the frozen year in view rather than at 13,000 BCE */
+    if (!renderLong.done) {
+      renderLong.done = true;
+      const sc = $(".lv-scroll"), lw = $(".lv-name").offsetWidth;
+      if (sc.scrollWidth > sc.clientWidth) sc.scrollLeft = lw + (sc.scrollWidth - lw) * lx(year) - lw - (sc.clientWidth - lw) / 2;
+    }
+  }
+  /* Light up the state ruling each place in the frozen year */
+  function markNow() {
+    $$("#lv .lv-row[data-place]").forEach((rowEl) => {
+      const { i } = polityAt(rowEl.dataset.place, year);
+      $$(".lv-blk", rowEl).forEach((b) => b.classList.toggle("now", +b.dataset.pi === i));
+    });
+    const fx = $("#lv-fixed");
+    if (fx) { fx.style.left = `calc(var(--lw) + (100% - var(--lw)) * ${lx(year)})`; $("b", fx).textContent = fmtAxis(year); }
+    const si = segIndex(year);
+    $$(".lv-ch, .sb-ch").forEach((b) => b.classList.toggle("on", +b.dataset.ch === si));
+  }
+  /* Show a label only where it fits whole, never as "K…"; hide ticks that would collide */
+  function fitLong() {
+    $$("#lv .lv-blk > span").forEach((s) => { s.style.visibility = s.scrollWidth > s.parentElement.clientWidth - 6 ? "hidden" : ""; });
+    declutter($$(".lv-tick"));
+  }
+  function declutter(els) {
     let edge = -Infinity;
-    $$(".lv-tick").forEach((el, i, all) => {
+    const last = els[els.length - 1]?.getBoundingClientRect();
+    els.forEach((el, i) => {
+      el.style.visibility = "";
       const r = el.getBoundingClientRect();
-      const clash = r.left < edge + 10 || (i < all.length - 1 && i > 0 && r.right > all[all.length - 1].getBoundingClientRect().left - 10);
+      const clash = r.left < edge + 10 || (i > 0 && i < els.length - 1 && last && r.right > last.left - 10);
       el.style.visibility = clash ? "hidden" : "";
       if (!clash) edge = r.right;
     });
-    $$("#long-seg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.long === longMode)));
-    $("#kind-legend").innerHTML = KD.map((k) => `<span><i class="k-${k.id}"></i>${esc(p(k.name))}</span>`).join("") +
-      `<span><i class="dot"></i>${esc(t("legDot"))}</span><span><i class="rule"></i>${esc(t("legRule"))}</span>`;
   }
   function lvFrac(ev) {
     const track = $(".lv-axis .lv-track");
@@ -462,53 +496,70 @@
   }
 
   /* ── Year slice ────────────────────────────── */
+  const stepFor = (y) => (y < -3500 ? 500 : y < -600 ? 100 : y < 500 ? 25 : y < 1450 ? 10 : y < 1750 ? 5 : y < 1914 ? 2 : 1);
+  const thumbPos = (f) => `calc(9px + (100% - 18px) * ${f})`;
   function renderSliceStatic() {
-    $("#year-presets").innerHTML = YEAR_PRESETS.map((y) => `<button type="button" class="chip" data-year="${y}">${esc(fmtAxis(y))}</button>`).join("");
+    $("#scrub-band").innerHTML = SEG.map((s, i) => `<span class="sb-ch" data-ch="${i}" style="left:${thumbPos(lx(s[0]))};width:calc((100% - 18px) * ${lx(s[1]) - lx(s[0])})"><span>${esc(p(CH[i].short))}</span></span>`).join("");
+    $("#year-presets").innerHTML = YEAR_PRESETS.map((y) => `<button type="button" data-year="${y}" style="left:${thumbPos(lx(y))}">${esc(fmtAxis(y))}</button>`).join("");
     $$("#slice-seg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.slice === sliceMode)));
+    requestAnimationFrame(() => { declutter($$("#year-presets button")); $$("#scrub-band .sb-ch > span").forEach((s) => { s.style.visibility = s.scrollWidth > s.parentElement.clientWidth - 4 ? "hidden" : ""; }); });
+  }
+  /* Before | now | after, in proportion, with the frozen year marked */
+  function seqHtml(prev, cur, next, gap) {
+    const mid = cur || gap;
+    const len = Math.max(1, Math.min(mid.e, NOW) - mid.s);
+    const a = prev ? Math.max(prev.s, mid.s - len * 0.8) : mid.s;
+    const b = next ? Math.min(Math.min(next.e, NOW), Math.min(mid.e, NOW) + len * 0.8) : Math.min(mid.e, NOW);
+    const X = (y) => clamp((y - a) / Math.max(1, b - a), 0, 1) * 100;
+    const blk = (q, cls) => q ? `<span class="${cls}" style="left:${X(q.s)}%;width:${X(Math.min(q.e, NOW)) - X(q.s)}%"></span>` : "";
+    return `<div class="seq" aria-hidden="true"><div class="seq-bar">${blk(prev, `sq k-${prev?.k}`)}${cur ? blk(cur, `sq now k-${cur.k}`) : blk(gap, "sq gap")}${blk(next, `sq k-${next?.k}`)}<i style="left:${X(year)}%"></i></div>
+      <div class="seq-lbl"><span>${prev ? "← " + esc(p(prev.n)) : ""}</span><span>${next ? esc(p(next.n)) + " " + esc(fmtAxis(next.s)) + " →" : ""}</span></div></div>`;
   }
   function renderSlice() {
     const w = windowFor(year), c = chapterOf(year);
     const big = year >= NOW ? (lang === "zh" ? "今天" : "Today") : year < 0 ? Math.abs(year).toLocaleString("en-US") : String(year);
     const era = year >= NOW ? "" : year < 0 ? t("bce") : t("ce");
-    $("#year-big").innerHTML = `${esc(big)}<small>${esc(era)}${era ? " · " : ""}${esc(p(c.title))}</small>`;
+    $("#year-big").innerHTML = `<span class="n">${esc(big)}</span><small>${esc(era)}${era ? " · " : ""}${esc(p(c.title))}</small>`;
     $("#year-range").value = Math.round(lx(year) * 1000);
-    $("#lv-fixed")?.setAttribute("style", `left:calc(var(--lw) + (100% - var(--lw)) * ${lx(year)})`);
-    const fixedLbl = $("#lv-fixed b");
-    if (fixedLbl) fixedLbl.textContent = fmtAxis(year);
-
-    const near = EV.filter((e) => Math.abs(e.year - year) <= w || (e.end && e.year <= year && e.end >= year))
-      .sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year)).slice(0, 12);
-    $("#slice-world").innerHTML = near.length ? `<span class="micro">${esc(t("meanwhile")(w))}</span>` + near.map((e) =>
-      `<button type="button" class="mw" data-ev="${e.id}" style="--c:${RGB[e.region].color}"><small>${esc(p(e.date))} · ${esc(e.place ? p(PLB[e.place].name) : p(RGB[e.region].name))}</small><b>${esc(p(e.title))}</b></button>`).join("") : "";
+    $("#step-lbl").textContent = t("step")(stepFor(year));
+    markNow();
 
     const pls = sliceMode === "cmp" ? cmp.map((id) => PLB[id]) : RG.flatMap((r) => PL.filter((x) => x.region === r.id));
+    $("#slice-range").textContent = t("sliceRange")(pls.length);
+    const tally = { s: 0, d: 0, f: 0, c: 0, none: 0 };
     $("#slice-grid").innerHTML = pls.map((pl) => {
       const r = RGB[pl.region], { q, i, list } = polityAt(pl.id, year);
-      let rule;
-      if (q) {
-        const len = length(q.s, Math.min(q.e, NOW)), into = length(q.s, year) + 1;
-        const f = clamp((year - q.s) / Math.max(1, Math.min(q.e, NOW) - q.s), 0, 1);
-        rule = `<div class="sc-rule k-${q.k}"><span class="kind">${esc(p(KDB[q.k].name))}</span><span class="pn">${esc(p(q.n))}</span><span class="yrs">${esc(span(q.s, q.e))}</span>
-          <div class="meter" aria-hidden="true"><i style="left:${(f * 100).toFixed(1)}%"></i></div><p class="age">${esc(t("yearOf")(Math.max(1, into), q.e >= NOW ? 0 : len))}</p></div>`;
-      } else rule = `<div class="sc-rule none"><span class="kind">—</span><span class="pn">${esc(t("noState"))}</span><p class="age">${esc(t("noStateBody"))}</p></div>`;
+      tally[q ? q.k : "none"]++;
       const prev = q ? list[i - 1] : list.filter((x) => x.e <= year).pop();
       const next = q ? list[i + 1] : list.find((x) => x.s > year);
+      let main;
+      if (q) {
+        const len = length(q.s, Math.min(q.e, NOW)), into = Math.max(1, length(q.s, year) + 1);
+        main = `<p class="kind">${esc(p(KDB[q.k].name))}</p><p class="pn">${esc(p(q.n))}</p><p class="yrs">${esc(span(q.s, q.e))} · ${esc(t("yearOf")(into, q.e >= NOW ? 0 : len))}</p>`;
+      } else main = `<p class="kind">—</p><p class="pn none">${esc(t("noState"))}</p><p class="yrs">${esc(t("noStateBody"))}</p>`;
+      const gap = !q && (prev || next) ? { s: prev ? prev.e : year - 1, e: next ? next.s : year + 1 } : null;
       const evs = EV.filter((e) => (e.place === pl.id || (e.also || []).includes(pl.id)) && (Math.abs(e.year - year) <= w || (e.end && e.year <= year && e.end >= year)))
         .sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year)).slice(0, 2);
       let evHtml;
-      if (evs.length) evHtml = `<span class="micro">${esc(t("within")(w))}</span>` + evs.map((e) => `<button type="button" data-ev="${e.id}"><span>${esc(p(e.date))}</span><b>${esc(p(e.title))}</b></button>`).join("");
+      if (evs.length) evHtml = evs.map((e) => `<li><button type="button" data-ev="${e.id}"><span>${esc(p(e.date))}</span><b>${esc(p(e.title))}</b></button></li>`).join("");
       else {
-        const mine = EV.filter((e) => e.place === pl.id);
-        const n = mine.sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year))[0];
-        evHtml = `<p class="none">${esc(t("nothingNear"))}</p>` + (n ? `<span class="micro">${esc(t("nearest"))}</span><button type="button" data-ev="${n.id}"><span>${esc(p(n.date))}</span><b>${esc(p(n.title))}</b></button>` : "");
+        const n = EV.filter((e) => e.place === pl.id).sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year))[0];
+        evHtml = n ? `<li class="far"><button type="button" data-ev="${n.id}"><span>${esc(t("nearest"))} · ${esc(p(n.date))}</span><b>${esc(p(n.title))}</b></button></li>` : "";
       }
-      const around = [prev ? `${esc(t("before"))}: <b>${esc(p(prev.n))}</b>` : "", next ? `${esc(t("after"))}: <b>${esc(p(next.n))}</b> (${esc(fmtAxis(next.s))})` : ""].filter(Boolean).join(" · ");
       return `<article class="sc" style="${regionVars(r)}">
-        <div class="sc-head"><span class="sw"></span><h3>${esc(p(pl.name))}</h3><span class="reg">${r.code}</span></div>
-        ${rule}
-        <div><div class="sc-ev">${evHtml}</div>${around ? `<p class="sc-next">${around}</p>` : ""}</div>
+        <header class="sc-head" title="${esc(p(r.name))}"><span class="sw"></span><h3>${esc(p(pl.name))}</h3></header>
+        <div class="sc-main">${main}${(q || gap) ? seqHtml(prev, q, next, gap) : ""}</div>
+        <ul class="sc-ev">${evHtml}</ul>
       </article>`;
     }).join("");
+    $("#slice-sum").innerHTML = t("sum")(fmtYear(year), pls.length) + ["s", "d", "f", "c", "none"].filter((k) => tally[k]).map((k) =>
+      `<span><i class="k-${k}"></i><b>${tally[k]}</b> ${esc(t("kindShort")[k])}</span>`).join("");
+
+    const near = EV.filter((e) => Math.abs(e.year - year) <= w || (e.end && e.year <= year && e.end >= year))
+      .sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year)).slice(0, 10);
+    $("#mw-lbl").textContent = t("meanwhile")(w);
+    $("#slice-world").innerHTML = near.length ? near.map((e) =>
+      `<button type="button" class="mw" data-ev="${e.id}" style="--c:${RGB[e.region].color}"><small>${esc(p(e.date))} · ${esc(e.place ? p(PLB[e.place].name) : p(RGB[e.region].name))}</small><b>${esc(p(e.title))}</b></button>`).join("") : `<p class="mw-none">${esc(t("nothingNear"))}</p>`;
   }
   function setYear(y, opts = {}) {
     year = niceYear(y);
@@ -716,7 +767,7 @@
     if ((el = g("[data-toggle]"))) { const pid = el.dataset.toggle; cmp.includes(pid) ? removePlace(pid) : addPlace(pid); return; }
     if ((el = g("[data-long]"))) { longMode = el.dataset.long; store.set("long", longMode); renderLong(); return; }
     if ((el = g("[data-slice]"))) { sliceMode = el.dataset.slice; store.set("slice", sliceMode); renderSliceStatic(); renderSlice(); return; }
-    if ((el = g("[data-step]"))) { let y = year + +el.dataset.step; if (year > 0 && y <= 0) y -= 1; else if (year < 0 && y >= 0) y += 1; setYear(clamp(y, MIN_YEAR, NOW)); return; }
+    if ((el = g("[data-dir]"))) { const d = +el.dataset.dir, st = stepFor(d < 0 ? year - 1 : year); let y = d < 0 ? Math.ceil(year / st) * st - st : Math.floor(year / st) * st + st; if (y === 0) y = d; setYear(clamp(y, MIN_YEAR, NOW)); return; }
     if ((el = g("[data-year]"))) { setYear(+el.dataset.year); return; }
     if ((el = g("[data-freeze]"))) { const y = +el.dataset.freeze; closeDetail(); setYear(y, { scroll: true }); return; }
     if ((el = g("[data-zoom]"))) { zoomIdx = clamp(zoomIdx + +el.dataset.zoom, 0, ZOOMS.length - 1); store.set("zoom", ZOOMS[zoomIdx]); const sc = $("#tl-scroll"), f = sc.scrollLeft / Math.max(1, sc.scrollWidth); renderAtlas(); sc.scrollLeft = f * sc.scrollWidth; return; }
@@ -733,6 +784,8 @@
   const lv = $("#lv");
   lv.addEventListener("mousemove", onLvMove);
   lv.addEventListener("mouseleave", () => { $("#lv-cursor").hidden = true; $("#lv-tip").hidden = true; });
+  let resizeT = 0;
+  addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { fitLong(); renderSliceStatic(); }, 150); });
 
   /* Drag the atlas sideways with a mouse */
   const sc = $("#tl-scroll");
