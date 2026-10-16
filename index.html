@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Worldlines</title>
+<meta name="description" content="A bilingual (English / 中文) atlas of world history in the style of Mondrian: compare regions and countries side by side across 15,000 years, chapter by chapter or one year at a time.">
+<meta name="theme-color" content="#fffdf7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' fill='%23141414'/%3E%3Crect x='2' y='2' width='22' height='5' fill='%23d52b1e'/%3E%3Crect x='2' y='9' width='8' height='6' fill='%23fffdf7'/%3E%3Crect x='12' y='9' width='12' height='6' fill='%231d4ed8'/%3E%3Crect x='2' y='17' width='15' height='7' fill='%23f3c623'/%3E%3Crect x='19' y='17' width='5' height='7' fill='%23fffdf7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap pad">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" fill="#141414"/><rect x="2" y="2" width="22" height="5" fill="#d52b1e"/><rect x="2" y="9" width="8" height="6" fill="#fffdf7"/><rect x="12" y="9" width="12" height="6" fill="#1d4ed8"/><rect x="2" y="17" width="15" height="7" fill="#f3c623"/><rect x="19" y="17" width="5" height="7" fill="#fffdf7"/></svg>
+      <span data-i18n="brand">Worldlines</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#atlas" data-i18n="navAtlas">Atlas</a>
+      <a href="#long" data-i18n="navLong">Long view</a>
+      <a href="#slice" data-i18n="navSlice">Year slice</a>
+      <a href="#learn" data-i18n="navLearn">How to learn</a>
+    </nav>
+    <button type="button" class="search-btn" id="search-open"><span data-i18n="search">Search</span> <kbd>/</kbd></button>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="masthead">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="kicker">A horizontal atlas of world history</p>
+      <div>
+        <h1><span data-i18n="h1a">WORLD</span><span class="red" data-i18n="h1b">LINES</span></h1>
+        <p class="hero-dek" data-i18n-html="dek">History is not one road. It is <strong>many places living at once.</strong> Move across time; look down to compare worlds.</p>
+      </div>
+      <div class="hero-meta">
+        <span id="stats"></span>
+        <a class="scroll-cue" href="#atlas" data-i18n="cue">Begin with Origins</a>
+      </div>
+    </div>
+    <div class="hero-graphic" aria-hidden="true">
+      <div class="latitudes"><i></i><i></i><i></i><i></i></div>
+      <div class="meridians"><i></i><i></i><i></i></div>
+      <p class="graphic-caption" data-i18n="heroCap">Same year. Different worlds. Shared consequences.</p>
+    </div>
+  </section>
+
+  <section class="manifesto" aria-label="How to read the atlas">
+    <div><b data-i18n="m1t">Read → across</b><p data-i18n="m1">Follow one place or region through a chapter, left to right.</p></div>
+    <div><b data-i18n="m2t">Compare ↓ down</b><p data-i18n="m2">Events on the same vertical line happened at about the same time.</p></div>
+    <div><b data-i18n="m3t">Slice ■ a year</b><p data-i18n="m3">Stop the clock and see who ruled where, in every place you are comparing.</p></div>
+  </section>
+
+  <section class="atlas" id="atlas">
+    <nav class="toolbar" aria-label="Chapters">
+      <div class="brand-mini" data-i18n-html="brandMini">WORLD<b>//</b>LINES</div>
+      <div class="chapter-nav" id="chapter-nav"></div>
+      <div class="zoom" role="group" aria-label="Zoom">
+        <button type="button" data-zoom="-1" aria-label="Zoom out">−</button>
+        <span id="zoom-val">1×</span>
+        <button type="button" data-zoom="1" aria-label="Zoom in">+</button>
+      </div>
+    </nav>
+
+    <div class="chapter-intro" aria-live="polite">
+      <div class="chapter-no" id="chapter-no"></div>
+      <div><h2 id="chapter-title"></h2></div>
+      <div class="chapter-note"><p class="range" id="chapter-range"></p><p id="chapter-desc"></p></div>
+    </div>
+
+    <div class="controls" id="controls">
+      <div class="ctl">
+        <span class="micro" data-i18n="lanesBy">Lanes</span>
+        <div class="seg" role="group" id="mode-seg">
+          <button type="button" data-mode="regions" data-i18n="modeRegions">Regions</button>
+          <button type="button" data-mode="places" data-i18n="modePlaces">Countries</button>
+        </div>
+      </div>
+      <div class="ctl cmp" id="cmp-ctl">
+        <span class="micro" data-i18n="compare">Compare</span>
+        <div class="cmp-chips" id="cmp-chips"></div>
+        <select id="cmp-add" class="cmp-add" aria-label="Add a country"></select>
+        <select id="cmp-preset" class="cmp-add" aria-label="Preset"></select>
+      </div>
+      <div class="theme-bar" id="theme-bar" aria-label="Filter by theme"></div>
+    </div>
+    <div class="tl-scroll" id="tl-scroll"><div class="stage" id="stage"></div></div>
+  </section>
+
+  <section class="block" id="long">
+    <div class="wrap pad">
+      <div class="head">
+        <h2 data-i18n="longTitle">Fifteen thousand years, one block per state</h2>
+        <p data-i18n="longLede">Each row is a place; each block is the state, dynasty, empire or colonial power that held it. Thick rules mark where the time scale changes. Hover to read the year, select to freeze it below, and select a place name to add it to your comparison.</p>
+      </div>
+      <div class="long-ctl">
+        <div class="seg" role="group" id="long-seg">
+          <button type="button" data-long="all" data-i18n="longAll">All places</button>
+          <button type="button" data-long="cmp" data-i18n="longCmp">Only my comparison</button>
+        </div>
+        <div class="legend" id="kind-legend"></div>
+      </div>
+      <div class="lv-scroll"><div class="lv" id="lv"></div></div>
+      <p class="hint" data-i18n="lvHint">Scroll sideways to see the whole span →</p>
+    </div>
+  </section>
+
+  <section class="block" id="slice">
+    <div class="wrap pad">
+      <div class="head">
+        <h2 data-i18n="sliceTitle">The world in one year</h2>
+        <p data-i18n="sliceLede">Pick a year. Every place you compare shows who ruled it, how long that state had lasted and how long it would last, and what happened nearby in time.</p>
+      </div>
+      <div class="slicer">
+        <div class="year-big" id="year-big" aria-live="polite"></div>
+        <div class="slicer-ctl">
+          <input type="range" id="year-range" min="0" max="1000" step="1" aria-label="Year">
+          <div class="steps-row">
+            <button type="button" class="chip" data-step="-100">−100</button>
+            <button type="button" class="chip" data-step="-10">−10</button>
+            <button type="button" class="chip" data-step="-1">−1</button>
+            <button type="button" class="chip" data-step="1">+1</button>
+            <button type="button" class="chip" data-step="10">+10</button>
+            <button type="button" class="chip" data-step="100">+100</button>
+            <span class="presets" id="year-presets"></span>
+          </div>
+          <div class="seg" role="group" id="slice-seg">
+            <button type="button" data-slice="cmp" data-i18n="longCmp">Only my comparison</button>
+            <button type="button" data-slice="all" data-i18n="longAll">All places</button>
+          </div>
+        </div>
+      </div>
+      <div class="meanwhile-strip" id="slice-world"></div>
+      <div class="slice-grid" id="slice-grid"></div>
+    </div>
+  </section>
+
+  <section class="learning" id="learn">
+    <div class="wrap pad">
+      <h2 data-i18n="learnTitle">How to learn the whole world without flattening it.</h2>
+      <ol class="learning-grid" id="learning"></ol>
+      <p class="footer-note" data-i18n="learnNote">This atlas is a learning scaffold: a deliberately selective set of turning points and states, not a claim to contain every people or experience. Dates marked “c.” are approximate, and broad processes resist single-year labels.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap pad">
+    <div>
+      <h3 data-i18n="fDatesT">About the dates and borders</h3>
+      <p data-i18n="fDates">Dates are conventional. States rarely began or ended in a single year, and modern country names are used only as stable places to stand: “China in 500 BCE” means the lands that later became China, not a nation that existed then.</p>
+    </div>
+    <div>
+      <h3 data-i18n="fImgT">About the images</h3>
+      <p data-i18n="fImg">Event pictures are the lead images of English Wikipedia articles, shown only when the file is on Wikimedia Commons. Every panel links to its source; check the file page before reusing an image.</p>
+    </div>
+    <div>
+      <h3 data-i18n="fProjT">The project</h3>
+      <p data-i18n-html="fProj">A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href="https://geekplux.github.io/art-isms/">Art-isms</a>.</p>
+    </div>
+  </div>
+</footer>
+
+<aside class="detail" id="detail" role="dialog" aria-modal="false" aria-labelledby="d-title" aria-hidden="true">
+  <div class="detail-top"><span data-i18n="detailTop">Event · connections</span><button type="button" class="x" id="detail-close" aria-label="Close">×</button></div>
+  <div class="detail-body" id="detail-body"></div>
+</aside>
+
+<section class="search" id="search" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true">
+  <div class="search-wrap">
+    <div class="search-head"><input class="search-input" id="search-input" type="search" autocomplete="off" placeholder="Search history…"><button type="button" class="x big" id="search-close" aria-label="Close">×</button></div>
+    <p class="search-help" data-i18n="searchHelp">Try “printing”, “empire”, “silver”, a dynasty or a country. Press Esc to close.</p>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</section>
+
+<div class="lv-tip" id="lv-tip" hidden></div>
+
+<script src="data/core.js"></script>
+<script src="data/polities.js"></script>
+<script src="data/events.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
