@@ -129,11 +129,11 @@
     get(k) { try { return localStorage.getItem("worldlines-" + k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem("worldlines-" + k, v); } catch (e) { /* storage blocked */ } }
   };
-  /* Language: ?lang=en|zh (shareable, and what search engines index) wins, then the saved choice, then the browser */
+  /* Language: English is the default. ?lang=en|zh (shareable, and what search engines index) wins, then the
+     visitor's saved choice. The browser's language is not used, so / is always the English page. */
   const LANGS = ["en", "zh"];
-  const browserZh = (navigator.language || "").toLowerCase().startsWith("zh");
   const urlLang = new URLSearchParams(location.search).get("lang");
-  let lang = LANGS.includes(urlLang) ? urlLang : store.get("lang") || (browserZh ? "zh" : "en");
+  let lang = LANGS.includes(urlLang) ? urlLang : store.get("lang") || "en";
   if (!LANGS.includes(lang)) lang = "en";
   /* Update one query parameter without reloading or touching the hash */
   function setParam(key, value) {
@@ -143,6 +143,8 @@
       history.replaceState(null, "", u.pathname + u.search + u.hash);
     } catch (e) { /* sandboxed */ }
   }
+  /* Keep the address true to the language on screen: Chinese is /?lang=zh, English is plain / */
+  if (lang === "zh" && urlLang !== "zh") setParam("lang", "zh");
   /* Analytics events; a no-op off the production domain, where gtag is never defined */
   const track = (name, params) => { if (typeof window.gtag === "function") window.gtag("event", name, params); };
   let yearTimer = 0;
@@ -802,7 +804,7 @@
     if ((el = g("[data-year]"))) { setYear(+el.dataset.year); return; }
     if ((el = g("[data-freeze]"))) { const y = +el.dataset.freeze; closeDetail(); setYear(y, { scroll: true }); return; }
     if ((el = g("[data-zoom]"))) { zoomIdx = clamp(zoomIdx + +el.dataset.zoom, 0, ZOOMS.length - 1); store.set("zoom", ZOOMS[zoomIdx]); const sc = $("#tl-scroll"), f = sc.scrollLeft / Math.max(1, sc.scrollWidth); renderAtlas(); sc.scrollLeft = f * sc.scrollWidth; return; }
-    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); setParam("lang", lang); track("select_content", { content_type: "language", item_id: lang }); renderAll(); } return; }
+    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); setParam("lang", lang === "zh" ? "zh" : null); track("select_content", { content_type: "language", item_id: lang }); renderAll(); } return; }
     if ((el = g("[data-consent]"))) { setConsent(el.dataset.consent); return; }
     if (g("#consent-open")) { $("#consent").hidden = false; $("#consent [data-consent]").focus(); return; }
     if (ev.target.closest(".lv") && !ev.target.closest("button")) { const f = lvFrac(ev); if (f != null) setYear(lxInv(f)); }

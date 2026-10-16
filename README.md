@@ -9,7 +9,7 @@ A bilingual (English / 中文) atlas of world history in the style of Mondrian. 
 - **Year slice.** Pick any year with the scrubber, a date mark or the ‹ › steps. Each place shows who ruled it, how far into that state's life the year falls, a to-scale strip of the states before and after, and nearby events. A side column lists what happened elsewhere at the same time.
 - **Event panel.** Shows why an event mattered, "meanwhile, elsewhere…", who ruled each compared place that year, and the Wikipedia lead image (Commons files only).
 - **Search** (<kbd>/</kbd>) covers events, countries and states. <kbd>Alt</kbd>+<kbd>←</kbd>/<kbd>→</kbd> changes chapter, and <kbd>Esc</kbd> closes panels.
-- **Shareable links.** `?lang=en|zh` picks the language. The hash records the chapter, the open event, the year and the comparison set, e.g. `/?lang=zh#c=oceans&e=tokugawa&y=1603&cmp=china,japan,britain`.
+- **Shareable links.** English is the default; `?lang=zh` opens the Chinese view (the browser's language is not used, and a visitor's own choice is remembered). The hash records the chapter, the open event, the year and the comparison set, e.g. `/?lang=zh#c=oceans&e=tokugawa&y=1603&cmp=china,japan,britain`.
 - **No build step.** Plain HTML, CSS and JavaScript, with the content in three data files. A sibling of [Art-isms](https://artisms.geekplux.org/).
 
 ## Run it locally

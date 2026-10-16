@@ -16,6 +16,8 @@ Read README.md for the data model and file layout. These are the rules that are 
 
 - Content is in `public/data/` (`window.WORLDLINES`): `core.js`, `polities.js`, `events.js`. Every piece of text is
   `{ "en": "…", "zh": "…" }`, both non-empty. Add new text in both languages in the same change.
+- English is the default language and `/` is always the English page; Chinese is `/?lang=zh`. Do not switch
+  language from the browser's locale: the search-engine tags (canonical, hreflang) depend on it.
 - One language at a time: the English view shows no Chinese at all (the 中文 language button is the one exception),
   and the Chinese view shows no English subtitles. Never render the other language as a secondary line.
 - Events are real and well attested; dates are conventional. Contested claims are stated as contested.
