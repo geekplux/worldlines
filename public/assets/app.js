@@ -149,6 +149,9 @@
   if (lang === "zh" && urlLang !== "zh") setParam("lang", "zh");
   /* Analytics events; a no-op off the production domain, where gtag is never defined */
   const track = (name, params) => { if (typeof window.gtag === "function") window.gtag("event", name, params); };
+  /* Page views are sent from here, after render, so the title matches the language on screen. The hash
+     (chapter, event, year, comparison) is left out of the location so it does not split page reports. */
+  const pageView = () => track("page_view", { page_title: document.title, page_location: location.origin + location.pathname + location.search });
   let yearTimer = 0;
   let mode = store.get("mode") === "places" ? "places" : "regions";
   let cmp = (store.get("cmp") || "").split(",").filter((id) => PLB[id]);
@@ -807,7 +810,7 @@
     if ((el = g("[data-year]"))) { setYear(+el.dataset.year); return; }
     if ((el = g("[data-freeze]"))) { const y = +el.dataset.freeze; closeDetail(); setYear(y, { scroll: true }); return; }
     if ((el = g("[data-zoom]"))) { zoomIdx = clamp(zoomIdx + +el.dataset.zoom, 0, ZOOMS.length - 1); store.set("zoom", ZOOMS[zoomIdx]); const sc = $("#tl-scroll"), f = sc.scrollLeft / Math.max(1, sc.scrollWidth); renderAtlas(); sc.scrollLeft = f * sc.scrollWidth; return; }
-    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); setParam("lang", lang === "zh" ? "zh" : null); track("select_content", { content_type: "language", item_id: lang }); renderAll(); } return; }
+    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); setParam("lang", lang === "zh" ? "zh" : null); renderAll(); pageView(); track("select_content", { content_type: "language", item_id: lang }); } return; }
     if ((el = g("[data-consent]"))) { setConsent(el.dataset.consent); return; }
     if (g("#consent-open")) { $("#consent").hidden = false; $("#consent [data-consent]").focus(); return; }
     if (ev.target.closest(".lv") && !ev.target.closest("button")) { const f = lvFrac(ev); if (f != null) setYear(lxInv(f)); }
@@ -849,7 +852,8 @@
   function setConsent(value) {
     store.set("consent", value);
     if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: value });
-    /* Withdrawing consent also removes cookies GA set earlier (on this host and on the parent domain) */
+    /* Withdrawing consent also removes GA cookies. They are host-only now (cookie_domain in index.html);
+       the parent-domain pass clears legacy ones set on .geekplux.org before that change */
     if (value === "denied") {
       const parent = "." + location.hostname.split(".").slice(-2).join(".");
       document.cookie.split(";").map((c) => c.split("=")[0].trim()).filter((n) => /^_ga/.test(n)).forEach((n) => {
@@ -879,5 +883,6 @@
 
   const startEv = readHash();
   renderAll();
+  pageView();
   if (startEv && EVB[startEv]) requestAnimationFrame(() => { $("#atlas").scrollIntoView(); openDetail(startEv, { reveal: true }); });
 })();
