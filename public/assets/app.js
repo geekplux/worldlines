@@ -854,7 +854,11 @@
     if (e.key === "/" && !typing) { e.preventDefault(); openSearch(); return; }
     if (e.altKey && (e.key === "ArrowRight" || e.key === "ArrowLeft")) { e.preventDefault(); selectChapter(chIdx + (e.key === "ArrowRight" ? 1 : -1)); }
   });
-  addEventListener("hashchange", () => { const id = readHash(); renderAll(); if (id && EVB[id]) openDetail(id, { reveal: true }); });
+  addEventListener("hashchange", () => {
+    /* A plain in-page anchor (#atlas, #top…) only scrolls: keep the view as it is and put the state back in the address */
+    if (!location.hash.includes("=")) { writeHash(); return; }
+    const id = readHash(); renderAll(); if (id && EVB[id]) openDetail(id, { reveal: true });
+  });
 
   /* Analytics consent (GA itself is set up in index.html, on the production domain only) */
   function setConsent(value) {
