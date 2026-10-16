@@ -2,40 +2,47 @@
 
 A bilingual (English / 中文) atlas of world history in the style of Mondrian. It lets you compare regions and countries side by side: chapter by chapter, across 15,000 years at once, or one year at a time.
 
+**Live site:** https://worldlines.geekplux.org/ ([中文](https://worldlines.geekplux.org/?lang=zh))
+
 - **Atlas.** Eight chapters, from the first settlements to today. Each lane is a **region** or a **country you choose**, so events on the same vertical line happened at about the same time. Country lanes also carry a strip showing which state held the place. You can filter by theme ("trace a thread"), zoom, and drag sideways.
-- **Long view.** 26 places × 15,000 years, one coloured block per state, dynasty, empire or colonial power. The scale is compressed in deep time, and thick rules mark where it changes. Hover to read a year; select to freeze it.
-- **Year slice.** Pick any year. Every place you are comparing shows who ruled it, how far into that state's life the year falls, what came before and after, and what happened nearby in time.
+- **Long view.** 26 places × 15,000 years, one block per state, dynasty, empire or colonial power. The countries you compare open into labelled rows, and the rest stay as thin strips. The states ruling in the frozen year are drawn in full colour.
+- **Year slice.** Pick any year with the scrubber, a date mark or the ‹ › steps. Each place shows who ruled it, how far into that state's life the year falls, a to-scale strip of the states before and after, and nearby events. A side column lists what happened elsewhere at the same time.
 - **Event panel.** Shows why an event mattered, "meanwhile, elsewhere…", who ruled each compared place that year, and the Wikipedia lead image (Commons files only).
 - **Search** (<kbd>/</kbd>) covers events, countries and states. <kbd>Alt</kbd>+<kbd>←</kbd>/<kbd>→</kbd> changes chapter, and <kbd>Esc</kbd> closes panels.
-- **Shareable state.** The URL hash records the chapter, the open event, the year and the comparison set, e.g. `#c=oceans&e=tokugawa&y=1603&cmp=china,japan,britain`.
-- **No build step.** Plain HTML, CSS and JavaScript, with the content in three data files. A sibling of [Art-isms](https://github.com/geekplux/art-isms).
+- **Shareable links.** `?lang=en|zh` picks the language. The hash records the chapter, the open event, the year and the comparison set, e.g. `/?lang=zh#c=oceans&e=tokugawa&y=1603&cmp=china,japan,britain`.
+- **No build step.** Plain HTML, CSS and JavaScript, with the content in three data files. A sibling of [Art-isms](https://artisms.geekplux.org/).
 
 ## Run it locally
 
 ```sh
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory public
 # then visit http://localhost:8000
 ```
 
-Opening `index.html` directly also works. Event images load from Wikipedia, so they need a connection; without one, each panel shows a Mondrian plate instead.
+`npx wrangler dev` also works. Event images load from Wikipedia, so they need a connection; without one, each panel shows a Mondrian plate instead.
 
 ## Project structure
 
 ```
-index.html            page skeleton and static copy
-assets/styles.css     all styles (paper, ink and De Stijl)
-assets/app.js         rendering, comparison, year slice, i18n, routing
-data/core.js          chapters, regions, places, themes, polity kinds, learning notes
-data/polities.js      who held each place, from first states to today
-data/events.js        every hinge point on the atlas
-scripts/check-data.mjs  validates all three data files (no dependencies)
+public/                 everything that is deployed, and nothing else
+  index.html            page skeleton, static copy, SEO tags, analytics setup
+  assets/styles.css     all styles (paper, ink and De Stijl)
+  assets/app.js         rendering, comparison, year slice, i18n, routing, consent bar
+  data/core.js          chapters, regions, places, themes, polity kinds, learning notes
+  data/polities.js      who held each place, from first states to today
+  data/events.js        every hinge point on the atlas
+  _headers              cache and security headers for Cloudflare
+  robots.txt, sitemap.xml, og.png, favicon.svg, apple-touch-icon.png, favicon-48.png
+scripts/check-data.mjs  validates the data, the asset stamps and the counts quoted in the page
+scripts/stamp-assets.mjs  writes ?v=<content hash> into index.html
+wrangler.jsonc          Cloudflare Workers Static Assets config
 ```
 
 ## Content model
 
 Every piece of text is a `{ "en": "…", "zh": "…" }` pair. Years are integers, and negative years are BCE.
 
-An **event** (`data/events.js`):
+An **event** (`public/data/events.js`):
 
 ```js
 {
@@ -50,7 +57,7 @@ An **event** (`data/events.js`):
 }
 ```
 
-A **polity** (`data/polities.js`, keyed by place id):
+A **polity** (`public/data/polities.js`, keyed by place id):
 
 ```js
 { "s": 1603, "e": 1868, "n": { "en": "Edo shogunate", "zh": "江户幕府" }, "k": "s", "wiki": "Tokugawa shogunate" }
@@ -70,10 +77,27 @@ Each place's polities are sorted and must not overlap. Gaps are allowed, and the
 ## Adding or correcting content
 
 1. Edit the data file.
-2. Run `node scripts/check-data.mjs`; add `--warnings` to list gaps and region mismatches.
-3. Open the page in both languages.
+2. If you changed `assets/app.js` or `assets/styles.css`, run `node scripts/stamp-assets.mjs`.
+3. Run `node scripts/check-data.mjs`; add `--warnings` to list gaps and region mismatches.
+4. Open the page in both languages, at desktop width and at 390px.
 
 CI runs the same check on every push and pull request.
+
+## Deployment
+
+The site is served at **https://worldlines.geekplux.org/** by **Cloudflare Workers Static Assets** with Workers Builds (Git integration). Every push to `master` runs `npx wrangler deploy`, which uploads `public/` as configured in `wrangler.jsonc`. There is no build command, and nothing outside `public/` (README, scripts, `.github`) is uploaded. The Worker name `worldlines` must match the Worker in the Cloudflare dashboard.
+
+`public/_headers` caches `assets/` for a year. That is safe because every reference to those files carries a content hash (`?v=…`) written by `scripts/stamp-assets.mjs`; `check-data` fails while a stamp is stale. `index.html` and `data/` are revalidated on every visit.
+
+## Analytics
+
+Google Analytics 4 (`G-10HB9ZHEKC`) runs on **worldlines.geekplux.org only**, never locally or on preview URLs. It uses Consent Mode v2: until a visitor accepts in the consent bar, `analytics_storage` is denied, so GA receives cookieless pings and sets no cookies. Accepting allows analytics cookies; "Cookie settings" in the footer reopens the choice, and declining deletes any `_ga` cookies. Ads features stay denied.
+
+Besides page views, the site sends `select_content` events for the chapter, event, year, comparison set and language people pick, and `search` with the search term. The setup is the inline script in `public/index.html`; the bar and events are in `public/assets/app.js`.
+
+## Search engines
+
+The page has a descriptive title and description in each language, a canonical URL per language with `hreflang` alternates (`/` for English, `/?lang=zh` for Chinese), Open Graph and Twitter cards (`og.png`), WebSite JSON-LD, `robots.txt` and `sitemap.xml`. A `<noscript>` block lists the eight chapters for crawlers that do not run JavaScript. The counts quoted in these tags are checked against the data by `check-data`.
 
 ## Caveats
 
@@ -81,6 +105,6 @@ Dates are conventional. States rarely begin or end in a single year. Modern coun
 
 ## License
 
-- Code (`index.html`, `assets/`, `scripts/`): [MIT](LICENSE)
-- Written content in `data/`: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-- Images are not part of this repository. Each one is loaded from Wikimedia Commons under its own licence.
+- Code (`public/index.html`, `public/assets/`, `scripts/`): [MIT](LICENSE)
+- Written content in `public/data/`: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+- Event images are not part of this repository. Each one is loaded from Wikimedia Commons under its own licence.
