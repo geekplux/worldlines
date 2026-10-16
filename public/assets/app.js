@@ -68,7 +68,7 @@
       docTitle: "世界线：横向比较各国与各地区的世界史图谱",
       docDesc: "蒙德里安风格的世界史图谱。横向比较26个国家与8个地区一万五千年的历史：218个转折点、348个政权与王朝，以及任意一年谁统治着哪里。中英双语。",
       brand: "世界线", navAtlas: "图谱", navLong: "长时段", navSlice: "年份切片", navLearn: "学习方法", search: "搜索",
-      star: "Star", starTitle: "在 GitHub 上给世界线点个 Star",
+      star: "星标", starTitle: "在 GitHub 上给世界线加星标",
       kicker: "一部横向展开的世界史图谱",
       dek: "历史不是一条路，而是<strong>许多地方同时在生活</strong>。横向穿越时间，纵向比较世界。",
       h1a: "世界", h1b: "线", brandMini: "世界<b>//</b>线",
