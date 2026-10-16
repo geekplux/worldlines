@@ -95,7 +95,7 @@ Google Analytics 4 (`G-10HB9ZHEKC`) runs on **worldlines.geekplux.org only**, ne
 
 Page views are not sent by `gtag("config")` (`send_page_view: false`). `app.js` sends them itself after the page has rendered, once on load and once after each language switch, so the title matches the language on screen; the location leaves out the hash, so chapter, event and year changes do not split the page reports. In the GA4 property, keep **Admin → Data streams → Enhanced measurement → Page views → Show advanced settings → "Page changes based on browser history events"** turned off: the site rewrites the URL with `history.replaceState` (the `?lang` parameter and the hash state), and that setting would log extra page views (`send_page_view: false` does not stop them).
 
-Besides page views, the site sends `select_content` events for the chapter, event, year, comparison set and language people pick, and `search` with the search term. The setup is the inline script in `public/index.html`; the bar and events are in `public/assets/app.js`.
+Besides page views, the site sends `select_content` events for the chapter, event, year, comparison set and language people pick, and `search` with only the number of matches when the search closes (never the typed text). The setup is the inline script in `public/index.html`; the bar and events are in `public/assets/app.js`.
 
 ## Search engines
 

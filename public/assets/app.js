@@ -705,9 +705,9 @@
     renderSearch("");
     setTimeout(() => $("#search-input").focus(), 30);
   }
+  /* Sent once, when the search closes. Only the number of matches: the typed text could be a name or an email */
   function closeSearch() {
-    const q = $("#search-input").value.trim();
-    if (q) track("search", { search_term: q });
+    if ($("#search-input").value.trim()) track("search", { result_count: searchCount });
     search.classList.remove("open");
     search.setAttribute("aria-hidden", "true");
     document.documentElement.classList.remove("locked");
@@ -724,10 +724,13 @@
     }
     return s;
   }
+  let searchCount = 0;
   function renderSearch(q) {
     const words = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const matches = words.length ? INDEX.filter((x) => words.every((w) => x.text.includes(w))) : [];
+    searchCount = matches.length;
     const hits = words.length
-      ? INDEX.filter((x) => words.every((w) => x.text.includes(w))).map((x) => ({ x, score: score(x, words) })).sort((a, b) => b.score - a.score).map((h) => h.x).slice(0, 40)
+      ? matches.map((x) => ({ x, score: score(x, words) })).sort((a, b) => b.score - a.score).map((h) => h.x).slice(0, 40)
       : EV.filter((e) => e.chapter === CH[chIdx].id).slice(0, 12).map((e) => ({ kind: "event", e }));
     $("#search-results").innerHTML = hits.length ? hits.map((x) => {
       if (x.kind === "event") {
