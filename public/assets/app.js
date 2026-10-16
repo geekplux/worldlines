@@ -59,13 +59,16 @@
       searchHelp: "Try “printing”, “empire”, “silver”, a dynasty or a country. Press Esc to close.", searchPh: "Search history…",
       kEvent: "Event", kPlace: "Country", kState: "State",
       noResults: (q) => `Nothing matches “${q}”. Try a broader place, theme or idea.`,
-      bce: "BCE", ce: "CE", now: "today", close: "Close", zoom: "Zoom"
+      bce: "BCE", ce: "CE", now: "today", close: "Close", zoom: "Zoom", zoomIn: "Zoom in", zoomOut: "Zoom out",
+      ariaSections: "Sections", ariaLang: "Language", ariaManifesto: "How to read the atlas", ariaChapters: "Chapters",
+      ariaAddPlace: "Add a country", ariaPreset: "Preset", ariaThemes: "Filter by theme", ariaYear: "Year", ariaStep: "Step",
+      ariaEarlier: "Earlier", ariaLater: "Later"
     },
     zh: {
       docTitle: "世界线：横向比较各国与各地区的世界史图谱",
       docDesc: "蒙德里安风格的世界史图谱。横向比较26个国家与8个地区一万五千年的历史：218个转折点、348个政权与王朝，以及任意一年谁统治着哪里。中英双语。",
       brand: "世界线", navAtlas: "图谱", navLong: "长时段", navSlice: "年份切片", navLearn: "学习方法", search: "搜索",
-      star: "Star", starTitle: "在 GitHub 上给世界线点个 Star",
+      star: "星标", starTitle: "在 GitHub 上给世界线加星标",
       kicker: "一部横向展开的世界史图谱",
       dek: "历史不是一条路，而是<strong>许多地方同时在生活</strong>。横向穿越时间，纵向比较世界。",
       h1a: "世界", h1b: "线", brandMini: "世界<b>//</b>线",
@@ -107,7 +110,10 @@
       searchHelp: "试试“印刷”“帝国”“白银”“独立”、一个王朝或一个国家。按 Esc 关闭。", searchPh: "搜索历史……",
       kEvent: "事件", kPlace: "国家", kState: "政权",
       noResults: (q) => `没有与“${q}”匹配的内容。换一个更宽泛的地点、主题或概念试试。`,
-      bce: "公元前", ce: "公元", now: "今天", close: "关闭", zoom: "缩放"
+      bce: "公元前", ce: "公元", now: "今天", close: "关闭", zoom: "缩放", zoomIn: "放大", zoomOut: "缩小",
+      ariaSections: "栏目", ariaLang: "语言", ariaManifesto: "如何阅读图谱", ariaChapters: "章节",
+      ariaAddPlace: "添加国家", ariaPreset: "预设组合", ariaThemes: "按主题筛选", ariaYear: "年份", ariaStep: "步进",
+      ariaEarlier: "更早", ariaLater: "更晚"
     }
   };
 
@@ -149,6 +155,9 @@
   if (lang === "zh" && urlLang !== "zh") setParam("lang", "zh");
   /* Analytics events; a no-op off the production domain, where gtag is never defined */
   const track = (name, params) => { if (typeof window.gtag === "function") window.gtag("event", name, params); };
+  /* Page views are sent from here, after render, so the title matches the language on screen. The hash
+     (chapter, event, year, comparison) is left out of the location so it does not split page reports. */
+  const pageView = () => track("page_view", { page_title: document.title, page_location: location.origin + location.pathname + location.search });
   let yearTimer = 0;
   let mode = store.get("mode") === "places" ? "places" : "regions";
   let cmp = (store.get("cmp") || "").split(",").filter((id) => PLB[id]);
@@ -295,14 +304,13 @@
     document.title = t("docTitle");
     $('meta[name="description"]').setAttribute("content", t("docDesc"));
     $('link[rel="canonical"]').setAttribute("href", "https://worldlines.geekplux.org/" + (lang === "zh" ? "?lang=zh" : ""));
-    $("h1").setAttribute("aria-label", t("brand"));
     $$("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
     $$("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
+    $$("[data-i18n-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
-    const star = $("#gh-star"); star.title = t("starTitle"); star.setAttribute("aria-label", t("starTitle"));
+    $("#gh-star").title = t("starTitle");
     $("#stats").textContent = UI[lang].stats(EV.length, POL_COUNT);
     $("#search-input").placeholder = t("searchPh");
-    $$(".zoom button").forEach((b) => b.setAttribute("aria-label", `${t("zoom")} ${b.dataset.zoom > 0 ? "+" : "−"}`));
   }
 
   /* ── Atlas ─────────────────────────────────── */
@@ -702,9 +710,9 @@
     renderSearch("");
     setTimeout(() => $("#search-input").focus(), 30);
   }
+  /* Sent once, when the search closes. Only the number of matches: the typed text could be a name or an email */
   function closeSearch() {
-    const q = $("#search-input").value.trim();
-    if (q) track("search", { search_term: q });
+    if ($("#search-input").value.trim()) track("search", { result_count: searchCount });
     search.classList.remove("open");
     search.setAttribute("aria-hidden", "true");
     document.documentElement.classList.remove("locked");
@@ -721,10 +729,13 @@
     }
     return s;
   }
+  let searchCount = 0;
   function renderSearch(q) {
     const words = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const matches = words.length ? INDEX.filter((x) => words.every((w) => x.text.includes(w))) : [];
+    searchCount = matches.length;
     const hits = words.length
-      ? INDEX.filter((x) => words.every((w) => x.text.includes(w))).map((x) => ({ x, score: score(x, words) })).sort((a, b) => b.score - a.score).map((h) => h.x).slice(0, 40)
+      ? matches.map((x) => ({ x, score: score(x, words) })).sort((a, b) => b.score - a.score).map((h) => h.x).slice(0, 40)
       : EV.filter((e) => e.chapter === CH[chIdx].id).slice(0, 12).map((e) => ({ kind: "event", e }));
     $("#search-results").innerHTML = hits.length ? hits.map((x) => {
       if (x.kind === "event") {
@@ -807,7 +818,7 @@
     if ((el = g("[data-year]"))) { setYear(+el.dataset.year); return; }
     if ((el = g("[data-freeze]"))) { const y = +el.dataset.freeze; closeDetail(); setYear(y, { scroll: true }); return; }
     if ((el = g("[data-zoom]"))) { zoomIdx = clamp(zoomIdx + +el.dataset.zoom, 0, ZOOMS.length - 1); store.set("zoom", ZOOMS[zoomIdx]); const sc = $("#tl-scroll"), f = sc.scrollLeft / Math.max(1, sc.scrollWidth); renderAtlas(); sc.scrollLeft = f * sc.scrollWidth; return; }
-    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); setParam("lang", lang === "zh" ? "zh" : null); track("select_content", { content_type: "language", item_id: lang }); renderAll(); } return; }
+    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); setParam("lang", lang === "zh" ? "zh" : null); renderAll(); pageView(); track("select_content", { content_type: "language", item_id: lang }); } return; }
     if ((el = g("[data-consent]"))) { setConsent(el.dataset.consent); return; }
     if (g("#consent-open")) { $("#consent").hidden = false; $("#consent [data-consent]").focus(); return; }
     if (ev.target.closest(".lv") && !ev.target.closest("button")) { const f = lvFrac(ev); if (f != null) setYear(lxInv(f)); }
@@ -843,13 +854,18 @@
     if (e.key === "/" && !typing) { e.preventDefault(); openSearch(); return; }
     if (e.altKey && (e.key === "ArrowRight" || e.key === "ArrowLeft")) { e.preventDefault(); selectChapter(chIdx + (e.key === "ArrowRight" ? 1 : -1)); }
   });
-  addEventListener("hashchange", () => { const id = readHash(); renderAll(); if (id && EVB[id]) openDetail(id, { reveal: true }); });
+  addEventListener("hashchange", () => {
+    /* A plain in-page anchor (#atlas, #top…) only scrolls: keep the view as it is and put the state back in the address */
+    if (!location.hash.includes("=")) { writeHash(); return; }
+    const id = readHash(); renderAll(); if (id && EVB[id]) openDetail(id, { reveal: true });
+  });
 
   /* Analytics consent (GA itself is set up in index.html, on the production domain only) */
   function setConsent(value) {
     store.set("consent", value);
     if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: value });
-    /* Withdrawing consent also removes cookies GA set earlier (on this host and on the parent domain) */
+    /* Withdrawing consent also removes GA cookies. They are host-only (cookie_domain "none" in index.html),
+       which the pass without a domain removes; the other passes clear older ones set on a domain */
     if (value === "denied") {
       const parent = "." + location.hostname.split(".").slice(-2).join(".");
       document.cookie.split(";").map((c) => c.split("=")[0].trim()).filter((n) => /^_ga/.test(n)).forEach((n) => {
@@ -879,5 +895,6 @@
 
   const startEv = readHash();
   renderAll();
+  pageView();
   if (startEv && EVB[startEv]) requestAnimationFrame(() => { $("#atlas").scrollIntoView(); openDetail(startEv, { reveal: true }); });
 })();

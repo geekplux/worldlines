@@ -47,7 +47,9 @@
 </script>
 <script>
 /* Google Analytics 4 with Consent Mode v2, on the production domain only. Until the visitor accepts in
-   the consent bar (assets/app.js), analytics_storage stays "denied": GA sends cookieless pings, no IDs. */
+   the consent bar (assets/app.js), analytics_storage stays "denied": GA sends cookieless pings, no IDs.
+   cookie_domain "none" makes the cookies host-only (no other *.geekplux.org site sees them), and app.js sends the page_view
+   itself once the page has rendered, so it carries the right language and title. */
 (function () {
   var GA_ID = "G-10HB9ZHEKC";
   if (location.hostname !== "worldlines.geekplux.org") return;
@@ -57,7 +59,7 @@
   window.gtag = function () { window.dataLayer.push(arguments); };
   gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: choice === "granted" ? "granted" : "denied" });
   gtag("js", new Date());
-  gtag("config", GA_ID);
+  gtag("config", GA_ID, { send_page_view: false, cookie_domain: "none" });
   var s = document.createElement("script");
   s.async = true;
   s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
@@ -73,15 +75,15 @@
       <svg viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" fill="#141414"/><rect x="2" y="2" width="22" height="5" fill="#d52b1e"/><rect x="2" y="9" width="8" height="6" fill="#fffdf7"/><rect x="12" y="9" width="12" height="6" fill="#1d4ed8"/><rect x="2" y="17" width="15" height="7" fill="#f3c623"/><rect x="19" y="17" width="5" height="7" fill="#fffdf7"/></svg>
       <span data-i18n="brand">Worldlines</span>
     </a>
-    <nav class="nav" aria-label="Sections">
+    <nav class="nav" aria-label="Sections" data-i18n-aria="ariaSections">
       <a href="#atlas" data-i18n="navAtlas">Atlas</a>
       <a href="#long" data-i18n="navLong">Long view</a>
       <a href="#slice" data-i18n="navSlice">Year slice</a>
       <a href="#learn" data-i18n="navLearn">How to learn</a>
     </nav>
     <button type="button" class="search-btn" id="search-open"><span data-i18n="search">Search</span> <kbd>/</kbd></button>
-    <a class="gh-star" id="gh-star" href="https://github.com/geekplux/worldlines" target="_blank" rel="noopener" aria-label="Star Worldlines on GitHub" title="Star Worldlines on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span data-i18n="star">Star</span></a>
-    <div class="lang" role="group" aria-label="Language">
+    <a class="gh-star" id="gh-star" href="https://github.com/geekplux/worldlines" target="_blank" rel="noopener" aria-label="Star Worldlines on GitHub" data-i18n-aria="starTitle" title="Star Worldlines on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span data-i18n="star">Star</span></a>
+    <div class="lang" role="group" aria-label="Language" data-i18n-aria="ariaLang">
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" data-lang="zh" lang="zh-CN" aria-pressed="false">中文</button>
     </div>
@@ -93,7 +95,7 @@
     <div class="hero-copy">
       <p class="eyebrow" data-i18n="kicker">A horizontal atlas of world history</p>
       <div>
-        <h1 aria-label="Worldlines"><span data-i18n="h1a" aria-hidden="true">WORLD</span><span class="red" data-i18n="h1b" aria-hidden="true">LINES</span></h1>
+        <h1 aria-label="Worldlines" data-i18n-aria="brand"><span data-i18n="h1a" aria-hidden="true">WORLD</span><span class="red" data-i18n="h1b" aria-hidden="true">LINES</span></h1>
         <p class="hero-dek" data-i18n-html="dek">History is not one road. It is <strong>many places living at once.</strong> Move across time; look down to compare worlds.</p>
       </div>
       <div class="hero-meta">
@@ -108,7 +110,7 @@
     </div>
   </section>
 
-  <section class="manifesto" aria-label="How to read the atlas">
+  <section class="manifesto" aria-label="How to read the atlas" data-i18n-aria="ariaManifesto">
     <div><b data-i18n="m1t">Read → across</b><p data-i18n="m1">Follow one place or region through a chapter, left to right.</p></div>
     <div><b data-i18n="m2t">Compare ↓ down</b><p data-i18n="m2">Events on the same vertical line happened at about the same time.</p></div>
     <div><b data-i18n="m3t">Slice ■ a year</b><p data-i18n="m3">Stop the clock and see who ruled where, in every place you are comparing.</p></div>
@@ -132,13 +134,13 @@
   </noscript>
 
   <section class="atlas" id="atlas">
-    <nav class="toolbar" aria-label="Chapters">
+    <nav class="toolbar" aria-label="Chapters" data-i18n-aria="ariaChapters">
       <div class="brand-mini" data-i18n-html="brandMini">WORLD<b>//</b>LINES</div>
       <div class="chapter-nav" id="chapter-nav"></div>
-      <div class="zoom" role="group" aria-label="Zoom">
-        <button type="button" data-zoom="-1" aria-label="Zoom out">−</button>
+      <div class="zoom" role="group" aria-label="Zoom" data-i18n-aria="zoom">
+        <button type="button" data-zoom="-1" aria-label="Zoom out" data-i18n-aria="zoomOut">−</button>
         <span id="zoom-val">1×</span>
-        <button type="button" data-zoom="1" aria-label="Zoom in">+</button>
+        <button type="button" data-zoom="1" aria-label="Zoom in" data-i18n-aria="zoomIn">+</button>
       </div>
     </nav>
 
@@ -159,10 +161,10 @@
       <div class="ctl cmp" id="cmp-ctl">
         <span class="micro" data-i18n="compare">Compare</span>
         <div class="cmp-chips" id="cmp-chips"></div>
-        <select id="cmp-add" class="cmp-add" aria-label="Add a country"></select>
-        <select id="cmp-preset" class="cmp-add" aria-label="Preset"></select>
+        <select id="cmp-add" class="cmp-add" aria-label="Add a country" data-i18n-aria="ariaAddPlace"></select>
+        <select id="cmp-preset" class="cmp-add" aria-label="Preset" data-i18n-aria="ariaPreset"></select>
       </div>
-      <div class="theme-bar" id="theme-bar" aria-label="Filter by theme"></div>
+      <div class="theme-bar" id="theme-bar" role="group" aria-label="Filter by theme" data-i18n-aria="ariaThemes"></div>
     </div>
     <div class="tl-scroll" id="tl-scroll"><div class="stage" id="stage"></div></div>
   </section>
@@ -194,14 +196,14 @@
       <div class="year-big" id="year-big" aria-live="polite"></div>
       <div class="scrub">
         <div class="scrub-band" id="scrub-band" aria-hidden="true"></div>
-        <input type="range" id="year-range" min="0" max="1000" step="1" aria-label="Year">
+        <input type="range" id="year-range" min="0" max="1000" step="1" aria-label="Year" data-i18n-aria="ariaYear">
         <div class="scrub-marks" id="year-presets"></div>
       </div>
       <div class="slicer-side">
-        <div class="stepper" role="group" aria-label="Step">
-          <button type="button" data-dir="-1" aria-label="Earlier">‹</button>
+        <div class="stepper" role="group" aria-label="Step" data-i18n-aria="ariaStep">
+          <button type="button" data-dir="-1" aria-label="Earlier" data-i18n-aria="ariaEarlier">‹</button>
           <span id="step-lbl"></span>
-          <button type="button" data-dir="1" aria-label="Later">›</button>
+          <button type="button" data-dir="1" aria-label="Later" data-i18n-aria="ariaLater">›</button>
         </div>
         <div class="seg" role="group" id="slice-seg">
           <button type="button" data-slice="cmp" data-i18n="sliceCmp">My comparison</button>
@@ -252,13 +254,13 @@
 </div>
 
 <aside class="detail" id="detail" role="dialog" aria-modal="false" aria-labelledby="d-title" aria-hidden="true">
-  <div class="detail-top"><span data-i18n="detailTop">Event · connections</span><button type="button" class="x" id="detail-close" aria-label="Close">×</button></div>
+  <div class="detail-top"><span data-i18n="detailTop">Event · connections</span><button type="button" class="x" id="detail-close" aria-label="Close" data-i18n-aria="close">×</button></div>
   <div class="detail-body" id="detail-body"></div>
 </aside>
 
-<section class="search" id="search" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true">
+<section class="search" id="search" role="dialog" aria-modal="true" aria-label="Search" data-i18n-aria="search" aria-hidden="true">
   <div class="search-wrap">
-    <div class="search-head"><input class="search-input" id="search-input" type="search" autocomplete="off" placeholder="Search history…"><button type="button" class="x big" id="search-close" aria-label="Close">×</button></div>
+    <div class="search-head"><input class="search-input" id="search-input" type="search" autocomplete="off" placeholder="Search history…"><button type="button" class="x big" id="search-close" aria-label="Close" data-i18n-aria="close">×</button></div>
     <p class="search-help" data-i18n="searchHelp">Try “printing”, “empire”, “silver”, a dynasty or a country. Press Esc to close.</p>
     <div class="search-results" id="search-results"></div>
   </div>
@@ -269,6 +271,6 @@
 <script src="data/core.js"></script>
 <script src="data/polities.js"></script>
 <script src="data/events.js"></script>
-<script src="assets/app.js?v=3320f34841"></script>
+<script src="assets/app.js?v=3a782017df"></script>
 </body>
 </html>

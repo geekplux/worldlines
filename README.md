@@ -91,9 +91,11 @@ The site is served at **https://worldlines.geekplux.org/** by **Cloudflare Worke
 
 ## Analytics
 
-Google Analytics 4 (`G-10HB9ZHEKC`) runs on **worldlines.geekplux.org only**, never locally or on preview URLs. It uses Consent Mode v2: until a visitor accepts in the consent bar, `analytics_storage` is denied, so GA receives cookieless pings and sets no cookies. Accepting allows analytics cookies; "Cookie settings" in the footer reopens the choice, and declining deletes any `_ga` cookies. Ads features stay denied.
+Google Analytics 4 (`G-10HB9ZHEKC`) runs on **worldlines.geekplux.org only**, never locally or on preview URLs. It uses Consent Mode v2: until a visitor accepts in the consent bar, `analytics_storage` is denied, so GA receives cookieless pings and sets no cookies. Accepting allows analytics cookies, which are host-only (`cookie_domain: "none"`: set on `worldlines.geekplux.org` itself, with no domain attribute), so they are not shared with Art-isms or any other `*.geekplux.org` site; "Cookie settings" in the footer reopens the choice, and declining deletes any `_ga` cookies. Ads features stay denied.
 
-Besides page views, the site sends `select_content` events for the chapter, event, year, comparison set and language people pick, and `search` with the search term. The setup is the inline script in `public/index.html`; the bar and events are in `public/assets/app.js`.
+Page views are not sent by `gtag("config")` (`send_page_view: false`). `app.js` sends them itself after the page has rendered, once on load and once after each language switch, so the title matches the language on screen; the location leaves out the hash, so chapter, event and year changes do not split the page reports. In the GA4 property, keep **Admin → Data streams → Enhanced measurement → Page views → Show advanced settings → "Page changes based on browser history events"** turned off: switching language rewrites the `?lang` parameter with `history.replaceState`, and that setting would log it as an extra page view (`send_page_view: false` does not stop them).
+
+Besides page views, the site sends `select_content` events for the chapter, event, year, comparison set and language people pick, and `search` with only the number of matches when the search closes (never the typed text). The setup is the inline script in `public/index.html`; the bar and events are in `public/assets/app.js`.
 
 ## Search engines
 
