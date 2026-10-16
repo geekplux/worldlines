@@ -17,6 +17,7 @@
       docTitle: "Worldlines: compare world history across countries and regions",
       docDesc: "An atlas of world history in the style of Mondrian. Compare 26 countries and 8 regions side by side across 15,000 years: 218 turning points, 348 states and dynasties, and who ruled where in any year. In English and Chinese.",
       brand: "Worldlines", navAtlas: "Atlas", navLong: "Long view", navSlice: "Year slice", navLearn: "How to learn", search: "Search",
+      star: "Star", starTitle: "Star Worldlines on GitHub",
       kicker: "A horizontal atlas of world history",
       dek: "History is not one road. It is <strong>many places living at once</strong>. Move across time; look down to compare worlds.",
       h1a: "WORLD", h1b: "LINES", brandMini: "WORLD<b>//</b>LINES",
@@ -64,6 +65,7 @@
       docTitle: "世界线：横向比较各国与各地区的世界史图谱",
       docDesc: "蒙德里安风格的世界史图谱。横向比较26个国家与8个地区一万五千年的历史：218个转折点、348个政权与王朝，以及任意一年谁统治着哪里。中英双语。",
       brand: "世界线", navAtlas: "图谱", navLong: "长时段", navSlice: "年份切片", navLearn: "学习方法", search: "搜索",
+      star: "Star", starTitle: "在 GitHub 上给世界线点个 Star",
       kicker: "一部横向展开的世界史图谱",
       dek: "历史不是一条路，而是<strong>许多地方同时在生活</strong>。横向穿越时间，纵向比较世界。",
       h1a: "世界", h1b: "线", brandMini: "世界<b>//</b>线",
@@ -297,6 +299,7 @@
     $$("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
     $$("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    const star = $("#gh-star"); star.title = t("starTitle"); star.setAttribute("aria-label", t("starTitle"));
     $("#stats").textContent = UI[lang].stats(EV.length, POL_COUNT);
     $("#search-input").placeholder = t("searchPh");
     $$(".zoom button").forEach((b) => b.setAttribute("aria-label", `${t("zoom")} ${b.dataset.zoom > 0 ? "+" : "−"}`));
