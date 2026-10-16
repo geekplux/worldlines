@@ -49,7 +49,8 @@
       fImgT: "About the images",
       fImg: "Event pictures are the lead images of English Wikipedia articles, shown only when the file is on Wikimedia Commons. Every panel links to its source; check the file page before reusing an image.",
       fProjT: "The project",
-      fProj: "A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href=\"https://geekplux.github.io/art-isms/\">Art-isms</a>.",
+      fProj: "A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href=\"https://artisms.geekplux.org/\">Art-isms</a>. Corrections are welcome on <a href=\"https://github.com/geekplux/worldlines\">GitHub</a>.",
+      consentText: "This site uses Google Analytics to count visits. Allow it to set analytics cookies?", consentYes: "Accept", consentNo: "Decline", cookieSettings: "Cookie settings",
       detailTop: "Event · connections", why: "Why it matters", frame: "Historical frame", meanwhileH: "Meanwhile, elsewhere…", ruledH: (y) => `Who ruled where in ${y}`,
       readWiki: "Read on Wikipedia ↗", freeze: (y) => `Freeze ${y} ■`, source: "Image", plate: "No free image for this event",
       searchHelp: "Try “printing”, “empire”, “silver”, a dynasty or a country. Press Esc to close.", searchPh: "Search history…",
@@ -93,7 +94,8 @@
       fImgT: "关于图片",
       fImg: "事件配图取自英文维基百科条目的首图，且仅在文件位于维基共享资源时显示。每张图都链接到来源页；转载前请先查看文件页的许可信息。",
       fProjT: "关于项目",
-      fProj: "一个无需构建的静态网站：HTML、CSS 与原生 JavaScript，全部内容存放在中英双语数据文件中。它是 <a href=\"https://geekplux.github.io/art-isms/\">艺术流派志</a> 的姊妹项目。",
+      fProj: "一个无需构建的静态网站：HTML、CSS 与原生 JavaScript，全部内容存放在中英双语数据文件中。它是 <a href=\"https://artisms.geekplux.org/\">艺术流派志</a> 的姊妹项目。欢迎在 <a href=\"https://github.com/geekplux/worldlines\">GitHub</a> 上提出修订。",
+      consentText: "本站使用 Google Analytics 统计访问量。是否允许设置统计 Cookie？", consentYes: "接受", consentNo: "拒绝", cookieSettings: "Cookie 设置",
       detailTop: "事件 · 关联", why: "为何重要", frame: "历史框架", meanwhileH: "与此同时，在别处……", ruledH: (y) => `${y}，谁统治着哪里`,
       readWiki: "在维基百科阅读 ↗", freeze: (y) => `定格在${y} ■`, source: "图片", plate: "此事件暂无自由版权图片",
       searchHelp: "试试“印刷”“帝国”“白银”“独立”、一个王朝或一个国家。按 Esc 关闭。", searchPh: "搜索历史……",
@@ -123,9 +125,23 @@
     get(k) { try { return localStorage.getItem("worldlines-" + k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem("worldlines-" + k, v); } catch (e) { /* storage blocked */ } }
   };
+  /* Language: ?lang=en|zh (shareable, and what search engines index) wins, then the saved choice, then the browser */
+  const LANGS = ["en", "zh"];
   const browserZh = (navigator.language || "").toLowerCase().startsWith("zh");
-  let lang = store.get("lang") || (browserZh ? "zh" : "en");
-  if (lang !== "en" && lang !== "zh") lang = "en";
+  const urlLang = new URLSearchParams(location.search).get("lang");
+  let lang = LANGS.includes(urlLang) ? urlLang : store.get("lang") || (browserZh ? "zh" : "en");
+  if (!LANGS.includes(lang)) lang = "en";
+  /* Update one query parameter without reloading or touching the hash */
+  function setParam(key, value) {
+    try {
+      const u = new URL(location.href);
+      if (value == null) u.searchParams.delete(key); else u.searchParams.set(key, value);
+      history.replaceState(null, "", u.pathname + u.search + u.hash);
+    } catch (e) { /* sandboxed */ }
+  }
+  /* Analytics events; a no-op off the production domain, where gtag is never defined */
+  const track = (name, params) => { if (typeof window.gtag === "function") window.gtag("event", name, params); };
+  let yearTimer = 0;
   let mode = store.get("mode") === "places" ? "places" : "regions";
   let cmp = (store.get("cmp") || "").split(",").filter((id) => PLB[id]);
   if (!cmp.length) cmp = DEFAULT_CMP.slice();
@@ -382,7 +398,9 @@
   }
 
   function selectChapter(i, opts = {}) {
+    const before = chIdx;
     chIdx = clamp(i, 0, CH.length - 1);
+    if (chIdx !== before) track("select_content", { content_type: "chapter", item_id: CH[chIdx].id });
     renderNav();
     renderIntro();
     renderAtlas();
@@ -563,6 +581,8 @@
   }
   function setYear(y, opts = {}) {
     year = niceYear(y);
+    clearTimeout(yearTimer);
+    yearTimer = setTimeout(() => track("select_content", { content_type: "year", item_id: String(year) }), 1500);
     renderSlice();
     writeHash();
     if (opts.scroll) $("#slice").scrollIntoView({ behavior: smooth(), block: "start" });
@@ -579,6 +599,7 @@
     const e = EVB[id];
     if (!e) return;
     if (!detail.classList.contains("open")) lastFocus = document.activeElement;
+    if (selected !== id) track("select_content", { content_type: "event", item_id: id });
     selected = id;
     const ci = CH.findIndex((c) => c.id === e.chapter);
     if (ci !== chIdx) selectChapter(ci, { keepScroll: true });
@@ -670,6 +691,8 @@
     setTimeout(() => $("#search-input").focus(), 30);
   }
   function closeSearch() {
+    const q = $("#search-input").value.trim();
+    if (q) track("search", { search_term: q });
     search.classList.remove("open");
     search.setAttribute("aria-hidden", "true");
     document.documentElement.classList.remove("locked");
@@ -704,6 +727,7 @@
   /* ── Compare set ───────────────────────────── */
   function setCmp(list, opts = {}) {
     cmp = list.filter((id, i) => PLB[id] && list.indexOf(id) === i).slice(0, MAX_CMP);
+    track("select_content", { content_type: "compare", item_id: cmp.join(",") });
     store.set("cmp", cmp.join(","));
     if (opts.places && mode !== "places") { mode = "places"; store.set("mode", mode); }
     renderControls();
@@ -771,7 +795,9 @@
     if ((el = g("[data-year]"))) { setYear(+el.dataset.year); return; }
     if ((el = g("[data-freeze]"))) { const y = +el.dataset.freeze; closeDetail(); setYear(y, { scroll: true }); return; }
     if ((el = g("[data-zoom]"))) { zoomIdx = clamp(zoomIdx + +el.dataset.zoom, 0, ZOOMS.length - 1); store.set("zoom", ZOOMS[zoomIdx]); const sc = $("#tl-scroll"), f = sc.scrollLeft / Math.max(1, sc.scrollWidth); renderAtlas(); sc.scrollLeft = f * sc.scrollWidth; return; }
-    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); renderAll(); } return; }
+    if ((el = g(".lang button"))) { if (el.dataset.lang !== lang) { lang = el.dataset.lang; store.set("lang", lang); setParam("lang", lang); track("select_content", { content_type: "language", item_id: lang }); renderAll(); } return; }
+    if ((el = g("[data-consent]"))) { setConsent(el.dataset.consent); return; }
+    if (g("#consent-open")) { $("#consent").hidden = false; $("#consent [data-consent]").focus(); return; }
     if (ev.target.closest(".lv") && !ev.target.closest("button")) { const f = lvFrac(ev); if (f != null) setYear(lxInv(f)); }
   });
   $("#detail-close").addEventListener("click", closeDetail);
@@ -806,6 +832,24 @@
     if (e.altKey && (e.key === "ArrowRight" || e.key === "ArrowLeft")) { e.preventDefault(); selectChapter(chIdx + (e.key === "ArrowRight" ? 1 : -1)); }
   });
   addEventListener("hashchange", () => { const id = readHash(); renderAll(); if (id && EVB[id]) openDetail(id, { reveal: true }); });
+
+  /* Analytics consent (GA itself is set up in index.html, on the production domain only) */
+  function setConsent(value) {
+    store.set("consent", value);
+    if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: value });
+    /* Withdrawing consent also removes cookies GA set earlier (on this host and on the parent domain) */
+    if (value === "denied") {
+      const parent = "." + location.hostname.split(".").slice(-2).join(".");
+      document.cookie.split(";").map((c) => c.split("=")[0].trim()).filter((n) => /^_ga/.test(n)).forEach((n) => {
+        for (const domain of ["", `; domain=${location.hostname}`, `; domain=${parent}`]) document.cookie = `${n}=; Max-Age=0; path=/${domain}`;
+      });
+    }
+    $("#consent").hidden = true;
+  }
+  if (typeof window.gtag === "function") {
+    $("#consent-open").hidden = false;
+    if (!store.get("consent")) $("#consent").hidden = false;
+  }
 
   function renderAll() {
     applyStatic();

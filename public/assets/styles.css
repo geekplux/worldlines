@@ -64,6 +64,18 @@ button { cursor: pointer; }
 @media (max-width: 860px) { .nav { display: none; } .search-btn { margin-left: auto; } .brand small { display: none; } }
 @media (max-width: 420px) { .search-btn span { display: none; } .lang button { min-width: 40px; padding: 5px 8px; } }
 
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 2px solid var(--ink); background: var(--white); font-weight: 700; font-size: 15px; text-decoration: none; }
+.btn.solid { background: var(--ink); color: var(--white); }
+.btn:hover { background: var(--yellow); color: var(--ink); }
+.linkish { border: 0; padding: 0; background: none; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.linkish:hover { color: var(--red); }
+
+/* Analytics consent bar: a card pinned to the bottom, offset shadow like a printed block */
+.consent { position: fixed; z-index: 85; left: var(--gutter); right: var(--gutter-r); bottom: max(12px, env(safe-area-inset-bottom, 0px)); max-width: 720px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 14px 16px; background: var(--white); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); font-size: 14px; }
+.consent p { flex: 1 1 260px; }
+.consent-actions { display: flex; gap: 8px; }
+.consent .btn { padding: 7px 14px; font-size: 14px; }
+
 /* ── Masthead: copy on paper, a De Stijl globe beside it ── */
 .masthead { min-height: calc(86vh - var(--bar-h)); display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); border-bottom: var(--rule) solid var(--ink); background: var(--paper); overflow: hidden; }
 .hero-copy { padding: clamp(32px, 6vw, 96px) var(--gutter-r) clamp(32px, 5vw, 64px) max(var(--gutter), clamp(22px, 6vw, 96px)); display: flex; flex-direction: column; justify-content: space-between; gap: 40px; border-right: var(--rule) solid var(--ink); }

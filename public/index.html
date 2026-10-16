@@ -7,7 +7,26 @@
 <meta name="description" content="A bilingual (English / 中文) atlas of world history in the style of Mondrian: compare regions and countries side by side across 15,000 years, chapter by chapter or one year at a time.">
 <meta name="theme-color" content="#fffdf7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' fill='%23141414'/%3E%3Crect x='2' y='2' width='22' height='5' fill='%23d52b1e'/%3E%3Crect x='2' y='9' width='8' height='6' fill='%23fffdf7'/%3E%3Crect x='12' y='9' width='12' height='6' fill='%231d4ed8'/%3E%3Crect x='2' y='17' width='15' height='7' fill='%23f3c623'/%3E%3Crect x='19' y='17' width='5' height='7' fill='%23fffdf7'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/styles.css?v=00ab49ac8a">
+<script>
+/* Google Analytics 4 with Consent Mode v2, on the production domain only. Until the visitor accepts in
+   the consent bar (assets/app.js), analytics_storage stays "denied": GA sends cookieless pings, no IDs. */
+(function () {
+  var GA_ID = "G-10HB9ZHEKC";
+  if (location.hostname !== "worldlines.geekplux.org") return;
+  var choice = null;
+  try { choice = localStorage.getItem("worldlines-consent"); } catch (e) { /* storage blocked */ }
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: choice === "granted" ? "granted" : "denied" });
+  gtag("js", new Date());
+  gtag("config", GA_ID);
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(s);
+})();
+</script>
+<link rel="stylesheet" href="assets/styles.css?v=7c5b75cd9b">
 </head>
 <body>
 <header class="topbar">
@@ -25,7 +44,7 @@
     <button type="button" class="search-btn" id="search-open"><span data-i18n="search">Search</span> <kbd>/</kbd></button>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang="zh" aria-pressed="false">中文</button>
+      <button type="button" data-lang="zh" lang="zh-CN" aria-pressed="false">中文</button>
     </div>
   </div>
 </header>
@@ -162,10 +181,19 @@
     </div>
     <div>
       <h3 data-i18n="fProjT">The project</h3>
-      <p data-i18n-html="fProj">A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href="https://geekplux.github.io/art-isms/">Art-isms</a>.</p>
+      <p data-i18n-html="fProj">A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href="https://artisms.geekplux.org/">Art-isms</a>. Corrections are welcome on <a href="https://github.com/geekplux/worldlines">GitHub</a>.</p>
+      <p><button type="button" class="linkish" id="consent-open" data-i18n="cookieSettings" hidden>Cookie settings</button></p>
     </div>
   </div>
 </footer>
+
+<div class="consent" id="consent" role="region" aria-labelledby="consent-text" hidden>
+  <p id="consent-text" data-i18n="consentText">This site uses Google Analytics to count visits. Allow it to set analytics cookies?</p>
+  <div class="consent-actions">
+    <button type="button" class="btn solid" data-consent="granted" data-i18n="consentYes">Accept</button>
+    <button type="button" class="btn" data-consent="denied" data-i18n="consentNo">Decline</button>
+  </div>
+</div>
 
 <aside class="detail" id="detail" role="dialog" aria-modal="false" aria-labelledby="d-title" aria-hidden="true">
   <div class="detail-top"><span data-i18n="detailTop">Event · connections</span><button type="button" class="x" id="detail-close" aria-label="Close">×</button></div>
@@ -185,6 +213,6 @@
 <script src="data/core.js"></script>
 <script src="data/polities.js"></script>
 <script src="data/events.js"></script>
-<script src="assets/app.js?v=6e4567f162"></script>
+<script src="assets/app.js?v=b677e7e62c"></script>
 </body>
 </html>
