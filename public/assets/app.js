@@ -864,8 +864,8 @@
   function setConsent(value) {
     store.set("consent", value);
     if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: value });
-    /* Withdrawing consent also removes GA cookies. They are host-only now (cookie_domain in index.html);
-       the parent-domain pass clears legacy ones set on .geekplux.org before that change */
+    /* Withdrawing consent also removes GA cookies. They are host-only (cookie_domain "none" in index.html),
+       which the pass without a domain removes; the other passes clear older ones set on a domain */
     if (value === "denied") {
       const parent = "." + location.hostname.split(".").slice(-2).join(".");
       document.cookie.split(";").map((c) => c.split("=")[0].trim()).filter((n) => /^_ga/.test(n)).forEach((n) => {

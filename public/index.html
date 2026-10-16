@@ -48,7 +48,7 @@
 <script>
 /* Google Analytics 4 with Consent Mode v2, on the production domain only. Until the visitor accepts in
    the consent bar (assets/app.js), analytics_storage stays "denied": GA sends cookieless pings, no IDs.
-   Cookies are host-only (not shared with other *.geekplux.org sites), and app.js sends the page_view
+   cookie_domain "none" makes the cookies host-only (no other *.geekplux.org site sees them), and app.js sends the page_view
    itself once the page has rendered, so it carries the right language and title. */
 (function () {
   var GA_ID = "G-10HB9ZHEKC";
@@ -59,7 +59,7 @@
   window.gtag = function () { window.dataLayer.push(arguments); };
   gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: choice === "granted" ? "granted" : "denied" });
   gtag("js", new Date());
-  gtag("config", GA_ID, { send_page_view: false, cookie_domain: location.hostname });
+  gtag("config", GA_ID, { send_page_view: false, cookie_domain: "none" });
   var s = document.createElement("script");
   s.async = true;
   s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
@@ -271,6 +271,6 @@
 <script src="data/core.js"></script>
 <script src="data/polities.js"></script>
 <script src="data/events.js"></script>
-<script src="assets/app.js?v=af67ea33de"></script>
+<script src="assets/app.js?v=3a782017df"></script>
 </body>
 </html>

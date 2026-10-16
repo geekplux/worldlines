@@ -37,11 +37,11 @@ Read README.md for the data model and file layout. These are the rules that are 
 
 - GA4 (`G-10HB9ZHEKC`) loads on `worldlines.geekplux.org` only, with Consent Mode v2 defaulting to denied.
   Keep the hostname guard, keep ads storage denied, and never send personal data in event parameters.
-- GA cookies are host-only (`cookie_domain: location.hostname`), so they are not shared with Art-isms or other
+- GA cookies are host-only (`cookie_domain: "none"`), so they are not shared with Art-isms or other
   `*.geekplux.org` sites.
 - Page views are sent by `pageView()` in `app.js` after render (load and language switch), not by `gtag("config")`
   (`send_page_view: false`), and without the hash. Keep the GA4 stream setting "Page changes based on browser history
-  events" (Enhanced measurement → Page views → advanced) off, or `history.replaceState` logs extra page views.
+  events" (Enhanced measurement → Page views → advanced) off, or the `?lang` replaceState logs extra page views.
 - Events go through `track()` in `app.js`; it is a no-op wherever `gtag` is not defined.
 
 ## Before every commit
