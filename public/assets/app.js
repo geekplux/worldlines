@@ -59,7 +59,10 @@
       searchHelp: "Try “printing”, “empire”, “silver”, a dynasty or a country. Press Esc to close.", searchPh: "Search history…",
       kEvent: "Event", kPlace: "Country", kState: "State",
       noResults: (q) => `Nothing matches “${q}”. Try a broader place, theme or idea.`,
-      bce: "BCE", ce: "CE", now: "today", close: "Close", zoom: "Zoom"
+      bce: "BCE", ce: "CE", now: "today", close: "Close", zoom: "Zoom", zoomIn: "Zoom in", zoomOut: "Zoom out",
+      ariaSections: "Sections", ariaLang: "Language", ariaManifesto: "How to read the atlas", ariaChapters: "Chapters",
+      ariaAddPlace: "Add a country", ariaPreset: "Preset", ariaThemes: "Filter by theme", ariaYear: "Year", ariaStep: "Step",
+      ariaEarlier: "Earlier", ariaLater: "Later"
     },
     zh: {
       docTitle: "世界线：横向比较各国与各地区的世界史图谱",
@@ -107,7 +110,10 @@
       searchHelp: "试试“印刷”“帝国”“白银”“独立”、一个王朝或一个国家。按 Esc 关闭。", searchPh: "搜索历史……",
       kEvent: "事件", kPlace: "国家", kState: "政权",
       noResults: (q) => `没有与“${q}”匹配的内容。换一个更宽泛的地点、主题或概念试试。`,
-      bce: "公元前", ce: "公元", now: "今天", close: "关闭", zoom: "缩放"
+      bce: "公元前", ce: "公元", now: "今天", close: "关闭", zoom: "缩放", zoomIn: "放大", zoomOut: "缩小",
+      ariaSections: "栏目", ariaLang: "语言", ariaManifesto: "如何阅读图谱", ariaChapters: "章节",
+      ariaAddPlace: "添加国家", ariaPreset: "预设组合", ariaThemes: "按主题筛选", ariaYear: "年份", ariaStep: "步进",
+      ariaEarlier: "更早", ariaLater: "更晚"
     }
   };
 
@@ -298,14 +304,13 @@
     document.title = t("docTitle");
     $('meta[name="description"]').setAttribute("content", t("docDesc"));
     $('link[rel="canonical"]').setAttribute("href", "https://worldlines.geekplux.org/" + (lang === "zh" ? "?lang=zh" : ""));
-    $("h1").setAttribute("aria-label", t("brand"));
     $$("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
     $$("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
+    $$("[data-i18n-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
-    const star = $("#gh-star"); star.title = t("starTitle"); star.setAttribute("aria-label", t("starTitle"));
+    $("#gh-star").title = t("starTitle");
     $("#stats").textContent = UI[lang].stats(EV.length, POL_COUNT);
     $("#search-input").placeholder = t("searchPh");
-    $$(".zoom button").forEach((b) => b.setAttribute("aria-label", `${t("zoom")} ${b.dataset.zoom > 0 ? "+" : "−"}`));
   }
 
   /* ── Atlas ─────────────────────────────────── */
