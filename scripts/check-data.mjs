@@ -1,13 +1,15 @@
 #!/usr/bin/env node
-// Validates data/core.js, data/polities.js and data/events.js: ids, links, bilingual text, years.
+// Validates public/data/core.js, polities.js and events.js (ids, links, bilingual text, years)
+// and the ?v= cache stamps in public/index.html.
 // Usage: node scripts/check-data.mjs   (no dependencies)
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
+import { staleStamps } from "./stamp-assets.mjs";
 
 const sandbox = { window: {} };
 for (const f of ["core", "polities", "events"]) {
-  const file = fileURLToPath(new URL(`../data/${f}.js`, import.meta.url));
+  const file = fileURLToPath(new URL(`../public/data/${f}.js`, import.meta.url));
   vm.runInNewContext(readFileSync(file, "utf8"), sandbox, { filename: file });
 }
 const D = sandbox.window.WORLDLINES;
@@ -80,6 +82,8 @@ for (const e of D.events) {
 }
 for (const c of D.chapters) for (const r of D.regions)
   if (!D.events.some((e) => e.chapter === c.id && e.region === r.id)) warn(`chapter "${c.id}"`, `no event in region ${r.id}`);
+
+for (const s of staleStamps()) fail("public/index.html", `${s} has a stale ?v= stamp: run node scripts/stamp-assets.mjs`);
 
 if (process.argv.includes("--warnings")) for (const w of warnings) console.warn("· " + w);
 if (errors.length) {
