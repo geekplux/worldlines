@@ -1,7 +1,7 @@
 # Worldlines: working conventions
 
 A static, bilingual (EN/中文) atlas of world history: 8 chapters, 26 places, their polities and about 220 events.
-Repository: github.com/geekplux/worldlines. Live: https://worldlines.geekplux.org/. Sibling project: Art-isms.
+Repository: github.com/geekplux/worldlines. Live: https://worldlines.geekplux.org/. Sister projects: Art-isms, Dialectica.
 Read README.md for the data model and file layout. These are the rules that are easy to break.
 
 ## No build step
@@ -31,6 +31,7 @@ Read README.md for the data model and file layout. These are the rules that are 
 - Mondrian carries meaning: colour = region, a block = a state, full colour = the state ruling in the frozen year.
   Everything else stays paper and ink. Prefer removing emphasis to adding it.
 - Hairlines inside sections; heavy rules only between sections and on timeline grids.
+- The footer opens with the sister-atlas strip: Art-isms, Worldlines, Dialectica, in that order, with the site you are on in solid ink. The same markup, styles and words live in all three repos; change them together.
 - Check every change at desktop width and at 390px, in both languages: no horizontal page scroll, no console errors.
 
 ## Analytics and privacy
