@@ -4,7 +4,7 @@ A bilingual (English / 中文) atlas of world history in the style of Mondrian. 
 
 ![Worldlines: a horizontal atlas of world history, with a blue, yellow and red Mondrian-style globe](public/og.png)
 
-**Live site:** https://worldlines.geekplux.org/ ([中文](https://worldlines.geekplux.org/?lang=zh))
+**Live site:** https://worldlines.geekplux.com/ ([中文](https://worldlines.geekplux.com/?lang=zh))
 
 - **Atlas.** Eight chapters, from the first settlements to today. Each lane is a **region** or a **country you choose**, so events on the same vertical line happened at about the same time. Country lanes also carry a strip showing which state held the place. You can filter by theme ("trace a thread"), zoom, and drag sideways.
 - **Long view.** 26 places × 15,000 years, one block per state, dynasty, empire or colonial power. The countries you compare open into labelled rows, and the rest stay as thin strips. The states ruling in the frozen year are drawn in full colour.
@@ -12,7 +12,7 @@ A bilingual (English / 中文) atlas of world history in the style of Mondrian. 
 - **Event panel.** Shows why an event mattered, "meanwhile, elsewhere…", who ruled each compared place that year, and the Wikipedia lead image (Commons files only).
 - **Search** (<kbd>/</kbd>) covers events, countries and states. <kbd>Alt</kbd>+<kbd>←</kbd>/<kbd>→</kbd> changes chapter, and <kbd>Esc</kbd> closes panels.
 - **Shareable links.** English is the default; `?lang=zh` opens the Chinese view (the browser's language is not used, and a visitor's own choice is remembered). The hash records the chapter, the open event, the year and the comparison set, e.g. `/?lang=zh#c=oceans&e=tokugawa&y=1603&cmp=china,japan,britain`.
-- **No build step.** Plain HTML, CSS and JavaScript, with the content in three data files. A sibling of [Art-isms](https://artisms.geekplux.org/) and [Dialectica](https://dialectica.geekplux.org/).
+- **No build step.** Plain HTML, CSS and JavaScript, with the content in three data files. A sibling of [Art-isms](https://artisms.geekplux.com/) and [Dialectica](https://dialectica.geekplux.com/).
 
 ## Sister atlases
 
@@ -20,9 +20,11 @@ Three bilingual atlases on one Mondrian grid, built the same way: static files w
 
 | | Atlas | What it maps |
 | --- | --- | --- |
-| <img src="https://artisms.geekplux.org/favicon.svg" width="22" alt=""> | [Art-isms · 艺术流派志](https://artisms.geekplux.org/) · [code](https://github.com/geekplux/artisms) | 40 art styles across 45,000 years, how each grew from the last, and three real works for each |
-| <img src="https://worldlines.geekplux.org/favicon.svg" width="22" alt=""> | [Worldlines · 世界线](https://worldlines.geekplux.org/) · [code](https://github.com/geekplux/worldlines) | 26 countries and 8 regions across 15,000 years, chapter by chapter or one year at a time |
-| <img src="https://dialectica.geekplux.org/favicon.svg" width="22" alt=""> | [Dialectica · 思辨谱](https://dialectica.geekplux.org/) · [code](https://github.com/geekplux/dialectica) | 72 schools and 204 thinkers across 8 traditions: who taught, read and argued with whom |
+| <img src="https://artisms.geekplux.com/favicon.svg" width="22" alt=""> | [Art-isms · 艺术流派志](https://artisms.geekplux.com/) · [code](https://github.com/geekplux/artisms) | 40 art styles across 45,000 years, how each grew from the last, and three real works for each |
+| <img src="https://worldlines.geekplux.com/favicon.svg" width="22" alt=""> | [Worldlines · 世界线](https://worldlines.geekplux.com/) · [code](https://github.com/geekplux/worldlines) | 26 countries and 8 regions across 15,000 years, chapter by chapter or one year at a time |
+| <img src="https://dialectica.geekplux.com/favicon.svg" width="22" alt=""> | [Dialectica · 思辨谱](https://dialectica.geekplux.com/) · [code](https://github.com/geekplux/dialectica) | 72 schools and 204 thinkers across 8 traditions: who taught, read and argued with whom |
+
+Made by [GeekPlux](https://geekplux.com/). I built these atlases out of my own curiosity, mainly to learn from them myself.
 
 ## Run it locally
 
@@ -97,13 +99,13 @@ CI runs the same check on every push and pull request.
 
 ## Deployment
 
-The site is served at **https://worldlines.geekplux.org/** by **Cloudflare Workers Static Assets** with Workers Builds (Git integration). Every push to `master` runs `npx wrangler deploy`, which uploads `public/` as configured in `wrangler.jsonc`. There is no build command, and nothing outside `public/` (README, scripts, `.github`) is uploaded. The Worker name `worldlines` must match the Worker in the Cloudflare dashboard.
+The site is served at **https://worldlines.geekplux.com/** by **Cloudflare Workers Static Assets** with Workers Builds (Git integration). Every push to `master` runs `npx wrangler deploy`, which uploads `public/` as configured in `wrangler.jsonc`. There is no build command, and nothing outside `public/` (README, scripts, `.github`) is uploaded. The Worker name `worldlines` must match the Worker in the Cloudflare dashboard. The old `worldlines.geekplux.org` still serves the same Worker as a secondary domain; canonical tags, the sitemap and every link use `.com`.
 
 `public/_headers` caches `assets/` for a year. That is safe because every reference to those files carries a content hash (`?v=…`) written by `scripts/stamp-assets.mjs`; `check-data` fails while a stamp is stale. `index.html` and `data/` are revalidated on every visit.
 
 ## Analytics
 
-Google Analytics 4 (`G-10HB9ZHEKC`) runs on **worldlines.geekplux.org only**, never locally or on preview URLs. It uses Consent Mode v2: until a visitor accepts in the consent bar, `analytics_storage` is denied, so GA receives cookieless pings and sets no cookies. Accepting allows analytics cookies, which are host-only (`cookie_domain: "none"`: set on `worldlines.geekplux.org` itself, with no domain attribute), so they are not shared with Art-isms, Dialectica or any other `*.geekplux.org` site; "Cookie settings" in the footer reopens the choice, and declining deletes any `_ga` cookies. Ads features stay denied.
+Google Analytics 4 (`G-10HB9ZHEKC`) runs on **worldlines.geekplux.com** (and the secondary `.org`) **only**, never locally or on preview URLs. It uses Consent Mode v2: until a visitor accepts in the consent bar, `analytics_storage` is denied, so GA receives cookieless pings and sets no cookies. Accepting allows analytics cookies, which are host-only (`cookie_domain: "none"`: set on `worldlines.geekplux.com` itself, with no domain attribute), so they are not shared with Art-isms, Dialectica or any other `*.geekplux.com` site; "Cookie settings" in the footer reopens the choice, and declining deletes any `_ga` cookies. Ads features stay denied.
 
 Page views are not sent by `gtag("config")` (`send_page_view: false`). `app.js` sends them itself after the page has rendered, once on load and once after each language switch, so the title matches the language on screen; the location leaves out the hash, so chapter, event and year changes do not split the page reports. In the GA4 property, keep **Admin → Data streams → Enhanced measurement → Page views → Show advanced settings → "Page changes based on browser history events"** turned off: switching language rewrites the `?lang` parameter with `history.replaceState`, and that setting would log it as an extra page view (`send_page_view: false` does not stop them).
 

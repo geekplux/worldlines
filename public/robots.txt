@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://worldlines.geekplux.org/sitemap.xml
+Sitemap: https://worldlines.geekplux.com/sitemap.xml

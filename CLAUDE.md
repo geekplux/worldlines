@@ -1,7 +1,8 @@
 # Worldlines: working conventions
 
 A static, bilingual (EN/中文) atlas of world history: 8 chapters, 26 places, their polities and about 220 events.
-Repository: github.com/geekplux/worldlines. Live: https://worldlines.geekplux.org/. Sister projects: Art-isms, Dialectica.
+Repository: github.com/geekplux/worldlines. Live: https://worldlines.geekplux.com/ (primary; `worldlines.geekplux.org` is a secondary domain, so
+canonical, sitemap and links always use `.com`). Sister projects: Art-isms, Dialectica.
 Read README.md for the data model and file layout. These are the rules that are easy to break.
 
 ## No build step
@@ -36,10 +37,10 @@ Read README.md for the data model and file layout. These are the rules that are 
 
 ## Analytics and privacy
 
-- GA4 (`G-10HB9ZHEKC`) loads on `worldlines.geekplux.org` only, with Consent Mode v2 defaulting to denied.
+- GA4 (`G-10HB9ZHEKC`) loads on `worldlines.geekplux.com` and `.org` only, with Consent Mode v2 defaulting to denied.
   Keep the hostname guard, keep ads storage denied, and never send personal data in event parameters.
 - GA cookies are host-only (`cookie_domain: "none"`), so they are not shared with Art-isms or other
-  `*.geekplux.org` sites.
+  `*.geekplux.com` sites.
 - Page views are sent by `pageView()` in `app.js` after render (load and language switch), not by `gtag("config")`
   (`send_page_view: false`), and without the hash. Keep the GA4 stream setting "Page changes based on browser history
   events" (Enhanced measurement → Page views → advanced) off, or the `?lang` replaceState logs extra page views.

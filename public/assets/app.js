@@ -18,7 +18,7 @@
       docDesc: "An atlas of world history in the style of Mondrian. Compare 26 countries and 8 regions side by side across 15,000 years: 218 turning points, 348 states and dynasties, and who ruled where in any year. In English and Chinese.",
       brand: "Worldlines", navAtlas: "Atlas", navLong: "Long view", navSlice: "Year slice", navLearn: "How to learn", search: "Search",
       star: "Star", starTitle: "Star Worldlines on GitHub",
-      ariaSisters: "Sister atlases", sistersT: "Three atlases, one grid", sArtisms: "Art-isms", sArtismsD: "40 art styles across 45,000 years", sWorldlines: "Worldlines", sWorldlinesD: "26 countries and 8 regions across 15,000 years", sDialectica: "Dialectica", sDialecticaD: "72 schools and 204 thinkers across 8 traditions",
+      ariaSisters: "Sister atlases", sistersT: "Three atlases, one grid", sArtisms: "Art-isms", sArtismsD: "40 art styles across 45,000 years", sWorldlines: "Worldlines", sWorldlinesD: "26 countries and 8 regions across 15,000 years", sDialectica: "Dialectica", sDialecticaD: "72 schools and 204 thinkers across 8 traditions", sistersBy: "Made by <a href=\"https://geekplux.com/\">GeekPlux</a>. I built these atlases out of my own curiosity, mainly to learn from them myself.",
       kicker: "A horizontal atlas of world history",
       dek: "History is not one road. It is <strong>many places living at once</strong>. Move across time; look down to compare worlds.",
       h1a: "WORLD", h1b: "LINES", brandMini: "WORLD<b>//</b>LINES",
@@ -53,7 +53,7 @@
       fImgT: "About the images",
       fImg: "Event pictures are the lead images of English Wikipedia articles, shown only when the file is on Wikimedia Commons. Every panel links to its source; check the file page before reusing an image.",
       fProjT: "The project",
-      fProj: "A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href=\"https://artisms.geekplux.org/\">Art-isms</a> and <a href=\"https://dialectica.geekplux.org/\">Dialectica</a>. Corrections are welcome on <a href=\"https://github.com/geekplux/worldlines\">GitHub</a>.",
+      fProj: "A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href=\"https://artisms.geekplux.com/\">Art-isms</a> and <a href=\"https://dialectica.geekplux.com/\">Dialectica</a>. Corrections are welcome on <a href=\"https://github.com/geekplux/worldlines\">GitHub</a>.",
       consentText: "This site uses Google Analytics to count visits. Allow it to set analytics cookies?", consentYes: "Accept", consentNo: "Decline", cookieSettings: "Cookie settings",
       detailTop: "Event · connections", why: "Why it matters", frame: "Historical frame", meanwhileH: "Meanwhile, elsewhere…", ruledH: (y) => `Who ruled where in ${y}`,
       readWiki: "Read on Wikipedia ↗", freeze: (y) => `Freeze ${y} ■`, source: "Image", plate: "No free image for this event",
@@ -70,7 +70,7 @@
       docDesc: "蒙德里安风格的世界史图谱。横向比较26个国家与8个地区一万五千年的历史：218个转折点、348个政权与王朝，以及任意一年谁统治着哪里。中英双语。",
       brand: "世界线", navAtlas: "图谱", navLong: "长时段", navSlice: "年份切片", navLearn: "学习方法", search: "搜索",
       star: "星标", starTitle: "在 GitHub 上给世界线加星标",
-      ariaSisters: "姊妹图谱", sistersT: "三部图谱，一张网格", sArtisms: "艺术流派志", sArtismsD: "四万五千年里的40个艺术流派", sWorldlines: "世界线", sWorldlinesD: "一万五千年里的26个国家与8个地区", sDialectica: "思辨谱", sDialecticaD: "8个传统中的72个学派与204位思想家",
+      ariaSisters: "姊妹图谱", sistersT: "三部图谱，一张网格", sArtisms: "艺术流派志", sArtismsD: "四万五千年里的40个艺术流派", sWorldlines: "世界线", sWorldlinesD: "一万五千年里的26个国家与8个地区", sDialectica: "思辨谱", sDialecticaD: "8个传统中的72个学派与204位思想家", sistersBy: "由 <a href=\"https://geekplux.com/\">GeekPlux</a> 制作。出于个人兴趣，我做了这几部图谱，主要是为了自己学习。",
       kicker: "一部横向展开的世界史图谱",
       dek: "历史不是一条路，而是<strong>许多地方同时在生活</strong>。横向穿越时间，纵向比较世界。",
       h1a: "世界", h1b: "线", brandMini: "世界<b>//</b>线",
@@ -105,7 +105,7 @@
       fImgT: "关于图片",
       fImg: "事件配图取自英文维基百科条目的首图，且仅在文件位于维基共享资源时显示。每张图都链接到来源页；转载前请先查看文件页的许可信息。",
       fProjT: "关于项目",
-      fProj: "一个无需构建的静态网站：HTML、CSS 与原生 JavaScript，全部内容存放在中英双语数据文件中。它是 <a href=\"https://artisms.geekplux.org/\">艺术流派志</a> 与 <a href=\"https://dialectica.geekplux.org/\">思辨谱</a> 的姊妹项目。欢迎在 <a href=\"https://github.com/geekplux/worldlines\">GitHub</a> 上提出修订。",
+      fProj: "一个无需构建的静态网站：HTML、CSS 与原生 JavaScript，全部内容存放在中英双语数据文件中。它是 <a href=\"https://artisms.geekplux.com/\">艺术流派志</a> 与 <a href=\"https://dialectica.geekplux.com/\">思辨谱</a> 的姊妹项目。欢迎在 <a href=\"https://github.com/geekplux/worldlines\">GitHub</a> 上提出修订。",
       consentText: "本站使用 Google Analytics 统计访问量。是否允许设置统计 Cookie？", consentYes: "接受", consentNo: "拒绝", cookieSettings: "Cookie 设置",
       detailTop: "事件 · 关联", why: "为何重要", frame: "历史框架", meanwhileH: "与此同时，在别处……", ruledH: (y) => `${y}，谁统治着哪里`,
       readWiki: "在维基百科阅读 ↗", freeze: (y) => `定格在${y} ■`, source: "图片", plate: "此事件暂无自由版权图片",
@@ -305,13 +305,13 @@
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
     document.title = t("docTitle");
     $('meta[name="description"]').setAttribute("content", t("docDesc"));
-    $('link[rel="canonical"]').setAttribute("href", "https://worldlines.geekplux.org/" + (lang === "zh" ? "?lang=zh" : ""));
+    $('link[rel="canonical"]').setAttribute("href", "https://worldlines.geekplux.com/" + (lang === "zh" ? "?lang=zh" : ""));
     $$("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
     $$("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
     $$("[data-i18n-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
     $("#gh-star").title = t("starTitle");
-    $$("a[data-sister]").forEach((a) => { a.href = `https://${a.dataset.sister}.geekplux.org/${lang === "zh" ? "?lang=zh" : ""}`; });
+    $$("a[data-sister]").forEach((a) => { a.href = `https://${a.dataset.sister}.geekplux.com/${lang === "zh" ? "?lang=zh" : ""}`; });
     $("#stats").textContent = UI[lang].stats(EV.length, POL_COUNT);
     $("#search-input").placeholder = t("searchPh");
   }
