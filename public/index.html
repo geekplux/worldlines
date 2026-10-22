@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Worldlines: compare world history across countries and regions</title>
 <meta name="description" content="An atlas of world history in the style of Mondrian. Compare 26 countries and 8 regions side by side across 15,000 years: 218 turning points, 348 states and dynasties, and who ruled where in any year. In English and Chinese.">
-<link rel="canonical" href="https://worldlines.geekplux.org/">
-<link rel="alternate" hreflang="en" href="https://worldlines.geekplux.org/">
-<link rel="alternate" hreflang="zh-Hans" href="https://worldlines.geekplux.org/?lang=zh">
-<link rel="alternate" hreflang="x-default" href="https://worldlines.geekplux.org/">
+<link rel="canonical" href="https://worldlines.geekplux.com/">
+<link rel="alternate" hreflang="en" href="https://worldlines.geekplux.com/">
+<link rel="alternate" hreflang="zh-Hans" href="https://worldlines.geekplux.com/?lang=zh">
+<link rel="alternate" hreflang="x-default" href="https://worldlines.geekplux.com/">
 <meta name="theme-color" content="#fffdf7">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -16,10 +16,10 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Worldlines">
-<meta property="og:url" content="https://worldlines.geekplux.org/">
+<meta property="og:url" content="https://worldlines.geekplux.com/">
 <meta property="og:title" content="Worldlines: compare world history across countries and regions">
 <meta property="og:description" content="Compare 26 countries and 8 regions across 15,000 years, chapter by chapter or one year at a time. A Mondrian-style atlas in English and Chinese.">
-<meta property="og:image" content="https://worldlines.geekplux.org/og.png">
+<meta property="og:image" content="https://worldlines.geekplux.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Worldlines: a horizontal atlas of world history, with a blue, yellow and red Mondrian-style globe.">
@@ -28,14 +28,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Worldlines: compare world history across countries and regions">
 <meta name="twitter:description" content="Compare 26 countries and 8 regions across 15,000 years, chapter by chapter or one year at a time.">
-<meta name="twitter:image" content="https://worldlines.geekplux.org/og.png">
+<meta name="twitter:image" content="https://worldlines.geekplux.com/og.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Worldlines",
   "alternateName": "世界线",
-  "url": "https://worldlines.geekplux.org/",
+  "url": "https://worldlines.geekplux.com/",
   "description": "A bilingual atlas of world history for comparing 26 countries and 8 regions across 15,000 years: turning points, states and dynasties, and who ruled where in any year.",
   "inLanguage": ["en", "zh-Hans"],
   "isAccessibleForFree": true,
@@ -46,13 +46,13 @@
 }
 </script>
 <script>
-/* Google Analytics 4 with Consent Mode v2, on the production domain only. Until the visitor accepts in
+/* Google Analytics 4 with Consent Mode v2, on the production domains only (.com, and .org until it redirects). Until the visitor accepts in
    the consent bar (assets/app.js), analytics_storage stays "denied": GA sends cookieless pings, no IDs.
-   cookie_domain "none" makes the cookies host-only (no other *.geekplux.org site sees them), and app.js sends the page_view
+   cookie_domain "none" makes the cookies host-only (no other *.geekplux.com or *.geekplux.org site sees them), and app.js sends the page_view
    itself once the page has rendered, so it carries the right language and title. */
 (function () {
   var GA_ID = "G-10HB9ZHEKC";
-  if (location.hostname !== "worldlines.geekplux.org") return;
+  if (!/^worldlines\.geekplux\.(com|org)$/.test(location.hostname)) return;
   var choice = null;
   try { choice = localStorage.getItem("worldlines-consent"); } catch (e) { /* storage blocked */ }
   window.dataLayer = window.dataLayer || [];
@@ -232,9 +232,9 @@
     <div class="wrap pad">
       <p class="micro" data-i18n="sistersT">Three atlases, one grid</p>
       <div class="sisters-row">
-      <a class="sister" href="https://artisms.geekplux.org/" data-sister="artisms"><svg viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" fill="#141414"/><rect x="2" y="2" width="13" height="14" fill="#d52b1e"/><rect x="17" y="2" width="7" height="14" fill="#fffdf7"/><rect x="2" y="18" width="6" height="6" fill="#1d4ed8"/><rect x="10" y="18" width="14" height="6" fill="#f3c623"/></svg><b data-i18n="sArtisms">Art-isms</b><span data-i18n="sArtismsD">40 art styles across 45,000 years</span></a>
+      <a class="sister" href="https://artisms.geekplux.com/" data-sister="artisms"><svg viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" fill="#141414"/><rect x="2" y="2" width="13" height="14" fill="#d52b1e"/><rect x="17" y="2" width="7" height="14" fill="#fffdf7"/><rect x="2" y="18" width="6" height="6" fill="#1d4ed8"/><rect x="10" y="18" width="14" height="6" fill="#f3c623"/></svg><b data-i18n="sArtisms">Art-isms</b><span data-i18n="sArtismsD">40 art styles across 45,000 years</span></a>
       <span class="sister here" aria-current="page"><svg viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" fill="#141414"/><rect x="2" y="2" width="22" height="5" fill="#d52b1e"/><rect x="2" y="9" width="8" height="6" fill="#fffdf7"/><rect x="12" y="9" width="12" height="6" fill="#1d4ed8"/><rect x="2" y="17" width="15" height="7" fill="#f3c623"/><rect x="19" y="17" width="5" height="7" fill="#fffdf7"/></svg><b data-i18n="sWorldlines">Worldlines</b><span data-i18n="sWorldlinesD">26 countries and 8 regions across 15,000 years</span></span>
-      <a class="sister" href="https://dialectica.geekplux.org/" data-sister="dialectica"><svg viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" fill="#141414"/><rect x="2" y="2" width="10" height="13" fill="#d52b1e"/><rect x="14" y="2" width="10" height="6" fill="#fffdf7"/><rect x="14" y="10" width="10" height="14" fill="#1d4ed8"/><rect x="2" y="17" width="10" height="7" fill="#f3c623"/></svg><b data-i18n="sDialectica">Dialectica</b><span data-i18n="sDialecticaD">72 schools and 204 thinkers across 8 traditions</span></a>
+      <a class="sister" href="https://dialectica.geekplux.com/" data-sister="dialectica"><svg viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" fill="#141414"/><rect x="2" y="2" width="10" height="13" fill="#d52b1e"/><rect x="14" y="2" width="10" height="6" fill="#fffdf7"/><rect x="14" y="10" width="10" height="14" fill="#1d4ed8"/><rect x="2" y="17" width="10" height="7" fill="#f3c623"/></svg><b data-i18n="sDialectica">Dialectica</b><span data-i18n="sDialecticaD">72 schools and 204 thinkers across 8 traditions</span></a>
       </div>
     </div>
   </nav>
@@ -249,7 +249,7 @@
     </div>
     <div>
       <h3 data-i18n="fProjT">The project</h3>
-      <p data-i18n-html="fProj">A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href="https://artisms.geekplux.org/">Art-isms</a> and <a href="https://dialectica.geekplux.org/">Dialectica</a>. Corrections are welcome on <a href="https://github.com/geekplux/worldlines">GitHub</a>.</p>
+      <p data-i18n-html="fProj">A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href="https://artisms.geekplux.com/">Art-isms</a> and <a href="https://dialectica.geekplux.com/">Dialectica</a>. Corrections are welcome on <a href="https://github.com/geekplux/worldlines">GitHub</a>.</p>
       <p><button type="button" class="linkish" id="consent-open" data-i18n="cookieSettings" hidden>Cookie settings</button></p>
     </div>
   </div>
@@ -281,6 +281,6 @@
 <script src="data/core.js"></script>
 <script src="data/polities.js"></script>
 <script src="data/events.js"></script>
-<script src="assets/app.js?v=a451831b4c"></script>
+<script src="assets/app.js?v=ba5be64da6"></script>
 </body>
 </html>
