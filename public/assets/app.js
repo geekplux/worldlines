@@ -61,7 +61,7 @@
       kEvent: "Event", kPlace: "Country", kState: "State",
       noResults: (q) => `Nothing matches “${q}”. Try a broader place, theme or idea.`,
       bce: "BCE", ce: "CE", now: "today", close: "Close", zoom: "Zoom", zoomIn: "Zoom in", zoomOut: "Zoom out",
-      ariaSections: "Sections", ariaLang: "Language", ariaManifesto: "How to read the atlas", ariaChapters: "Chapters",
+      skip: "Skip to content", ariaSections: "Sections", ariaLang: "Language", ariaManifesto: "How to read the atlas", ariaChapters: "Chapters",
       ariaAddPlace: "Add a country", ariaPreset: "Preset", ariaThemes: "Filter by theme", ariaYear: "Year", ariaStep: "Step",
       ariaEarlier: "Earlier", ariaLater: "Later"
     },
@@ -113,7 +113,7 @@
       kEvent: "事件", kPlace: "国家", kState: "政权",
       noResults: (q) => `没有与“${q}”匹配的内容。换一个更宽泛的地点、主题或概念试试。`,
       bce: "公元前", ce: "公元", now: "今天", close: "关闭", zoom: "缩放", zoomIn: "放大", zoomOut: "缩小",
-      ariaSections: "栏目", ariaLang: "语言", ariaManifesto: "如何阅读图谱", ariaChapters: "章节",
+      skip: "跳到正文", ariaSections: "栏目", ariaLang: "语言", ariaManifesto: "如何阅读图谱", ariaChapters: "章节",
       ariaAddPlace: "添加国家", ariaPreset: "预设组合", ariaThemes: "按主题筛选", ariaYear: "年份", ariaStep: "步进",
       ariaEarlier: "更早", ariaLater: "更晚"
     }

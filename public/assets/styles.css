@@ -39,6 +39,10 @@ a:hover { color: var(--red); }
 button, select, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+/* Skip link: off-screen until focused by keyboard. */
+.skip { position: absolute; left: 12px; top: -200px; z-index: 100; padding: 10px 14px; background: var(--ink); color: var(--white); font-weight: 700; text-decoration: none; }
+.skip:focus { top: calc(env(safe-area-inset-top, 0px) + 8px); }
+main:focus { outline: none; } /* focused only as the skip-link target */
 .kicker, .micro, .mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
 .kicker { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
 .micro { font-size: 11px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
@@ -169,7 +173,8 @@ button { cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
 .cmp-chips { display: flex; flex-wrap: wrap; gap: 5px; }
 .cmp-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--hair); background: var(--white); padding: 3px 4px 3px 9px; font-size: 12px; font-weight: 600; }
-.cmp-chip .rm { border: 0; background: transparent; padding: 0 4px; font-size: 15px; line-height: 1; }
+.cmp-chip .rm { position: relative; border: 0; background: transparent; padding: 0 4px; font-size: 15px; line-height: 1; }
+.cmp-chip .rm::after, .lane-label .rm::after { content: ""; position: absolute; inset: -6px -4px; } /* 26px hit area, same look */
 .cmp-chip .rm:hover { color: var(--red); }
 .cmp-add { border: 1px solid var(--hair); background: var(--white); padding: 4px 8px; font-size: 12px; font-weight: 600; max-width: 210px; }
 .ctl.cmp.off .cmp-chips, .ctl.cmp.off .cmp-add { opacity: .4; }
@@ -275,6 +280,7 @@ button.lv-name:hover { background: var(--paper); }
 .lv-blk.now.k-c { background: var(--tint); color: var(--ink); }
 .lv-blk:hover { box-shadow: inset 0 0 0 2px var(--ink); }
 .lv-dot { position: absolute; bottom: 4px; width: 5px; height: 5px; background: var(--ink); border: 0; box-shadow: 0 0 0 1px var(--white); transform: translateX(-50%); z-index: 3; padding: 0; opacity: .55; }
+.lv-dot::after { content: ""; position: absolute; inset: -9px -7px; } /* 23 × 19px hit area for a 5px dot, same look */
 .lv-dot:hover { opacity: 1; transform: translateX(-50%) scale(1.6); }
 .lv-dot.dim { opacity: .12; }
 .lv-reg .lv-name { grid-column: 1 / -1; font: 700 10px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); min-height: 30px; padding-top: 12px; padding-bottom: 6px; align-items: end; border-right: 0; background: var(--white); }
@@ -315,6 +321,7 @@ button.lv-name:hover { background: var(--paper); }
 .scrub input[type="range"]::-moz-range-thumb { width: 14px; height: 22px; background: var(--red); border: 2px solid var(--ink); border-radius: 0; }
 .scrub-marks { position: absolute; left: 0; right: 0; top: 60px; height: 22px; }
 .scrub-marks button { position: absolute; transform: translateX(-50%); border: 0; background: transparent; padding: 2px 3px; font: 700 10.5px/1 var(--f-mono); color: var(--muted); white-space: nowrap; }
+.scrub-marks button::after { content: ""; position: absolute; inset: -6px -3px; } /* 26px-tall hit area, same look */
 .scrub-marks button::before { content: ""; position: absolute; left: 50%; top: -5px; height: 4px; border-left: 1px solid var(--muted); }
 .scrub-marks button:hover { color: var(--red); }
 .slicer-side { display: grid; gap: 10px; justify-items: end; }
