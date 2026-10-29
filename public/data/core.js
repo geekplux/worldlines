@@ -18,7 +18,7 @@ Object.assign(window.WORLDLINES, {
       short: { en: "Classical", zh: "古典" },
       title: { en: "Classical Worlds", zh: "古典世界" },
       range: { en: "c. 600 BCE–600 CE", zh: "约公元前600–公元600年" },
-      description: { en: "Large empires and durable schools of thought take shape across Eurasia, Africa and the Americas.", zh: "大型帝国与延续千年的思想流派，在欧亚大陆、非洲和美洲同时成形。" } },
+      description: { en: "Large empires and durable schools of thought take shape across Eurasia, Africa and the Americas.", zh: "大型帝国与延续久远的思想流派在欧亚大陆、非洲和美洲形成。" } },
     { id: "networks", start: 500, end: 1500,
       short: { en: "Networks", zh: "互联" },
       title: { en: "Connected Worlds", zh: "互联世界" },
