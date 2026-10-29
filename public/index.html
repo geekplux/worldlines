@@ -22,6 +22,7 @@
 <meta property="og:image" content="https://worldlines.geekplux.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:alt" content="Worldlines: a horizontal atlas of world history, with a blue, yellow and red Mondrian-style globe.">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="zh_CN">
@@ -29,20 +30,35 @@
 <meta name="twitter:title" content="Worldlines: compare world history across countries and regions">
 <meta name="twitter:description" content="Compare 26 countries and 8 regions across 15,000 years, chapter by chapter or one year at a time.">
 <meta name="twitter:image" content="https://worldlines.geekplux.com/og.png">
+<meta name="twitter:image:alt" content="Worldlines: a horizontal atlas of world history, with a blue, yellow and red Mondrian-style globe.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Worldlines",
-  "alternateName": "世界线",
-  "url": "https://worldlines.geekplux.com/",
-  "description": "A bilingual atlas of world history for comparing 26 countries and 8 regions across 15,000 years: turning points, states and dynasties, and who ruled where in any year.",
-  "inLanguage": ["en", "zh-Hans"],
-  "isAccessibleForFree": true,
-  "about": [{ "@type": "Thing", "name": "World history" }, { "@type": "Thing", "name": "Comparative history" }, { "@type": "Thing", "name": "Timeline" }],
-  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
-  "creator": { "@type": "Person", "name": "GeekPlux", "url": "https://geekplux.com/", "sameAs": ["https://github.com/geekplux"] },
-  "codeRepository": "https://github.com/geekplux/worldlines"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://worldlines.geekplux.com/#website",
+      "name": "Worldlines",
+      "alternateName": "世界线",
+      "url": "https://worldlines.geekplux.com/",
+      "description": "A bilingual atlas of world history for comparing 26 countries and 8 regions across 15,000 years: turning points, states and dynasties, and who ruled where in any year.",
+      "inLanguage": ["en", "zh-Hans"],
+      "isAccessibleForFree": true,
+      "about": [{ "@type": "Thing", "name": "World history" }, { "@type": "Thing", "name": "Comparative history" }, { "@type": "Thing", "name": "Timeline" }],
+      "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creator": { "@type": "Person", "name": "GeekPlux", "url": "https://geekplux.com/", "sameAs": ["https://github.com/geekplux"] },
+      "codeRepository": "https://github.com/geekplux/worldlines"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://worldlines.geekplux.com/#webpage",
+      "url": "https://worldlines.geekplux.com/",
+      "name": "Worldlines: compare world history across countries and regions",
+      "isPartOf": { "@id": "https://worldlines.geekplux.com/#website" },
+      "inLanguage": "en",
+      "primaryImageOfPage": { "@type": "ImageObject", "url": "https://worldlines.geekplux.com/og.png", "width": 1200, "height": 630 }
+    }
+  ]
 }
 </script>
 <script>
