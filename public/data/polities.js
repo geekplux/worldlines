@@ -39,8 +39,8 @@ window.WORLDLINES.polities = {
   ],
   "korea": [
     {"s":-8000,"e":-1500,"n":{"en":"Jeulmun","zh":"栉文土器时代"},"k":"c","wiki":"Jeulmun pottery period"},
-    {"s":-1500,"e":-400,"n":{"en":"Mumun","zh":"无纹土器时代"},"k":"c","wiki":"Mumun pottery period"},
-    {"s":-400,"e":-108,"n":{"en":"Gojoseon","zh":"古朝鲜"},"k":"s","wiki":"Old Chosŏn"},
+    {"s":-1500,"e":-300,"n":{"en":"Mumun","zh":"无纹土器时代"},"k":"c","wiki":"Mumun pottery period"},
+    {"s":-300,"e":-108,"n":{"en":"Gojoseon","zh":"古朝鲜"},"k":"s","wiki":"Old Chosŏn"},
     {"s":-108,"e":-57,"n":{"en":"Proto–Three Kingdoms","zh":"原三国时代"},"k":"d","wiki":"Proto–Three Kingdoms period"},
     {"s":-57,"e":668,"n":{"en":"Three Kingdoms","zh":"三国时代"},"k":"d","wiki":"Three Kingdoms of Korea"},
     {"s":668,"e":892,"n":{"en":"Unified Silla","zh":"统一新罗"},"k":"s","wiki":"Unified Silla"},
@@ -52,9 +52,9 @@ window.WORLDLINES.polities = {
     {"s":1945,"e":2026,"n":{"en":"Divided Korea","zh":"南北分裂"},"k":"d","wiki":"Division of Korea"}
   ],
   "india": [
-    {"s":-7000,"e":-3300,"n":{"en":"Neolithic Mehrgarh","zh":"梅赫尔格尔"},"k":"c","wiki":"Mehrgarh"},
-    {"s":-3300,"e":-1300,"n":{"en":"Indus civilisation","zh":"印度河文明"},"k":"c","wiki":"Indus Valley Civilisation"},
-    {"s":-1300,"e":-600,"n":{"en":"Vedic period","zh":"吠陀时代"},"k":"c","wiki":"Vedic period"},
+    {"s":-7000,"e":-2600,"n":{"en":"Mehrgarh & early Indus villages","zh":"梅赫尔格尔与早期印度河村落"},"k":"c","wiki":"Mehrgarh"},
+    {"s":-2600,"e":-1500,"n":{"en":"Indus civilisation","zh":"印度河文明"},"k":"c","wiki":"Indus Valley Civilisation"},
+    {"s":-1500,"e":-600,"n":{"en":"Vedic period","zh":"吠陀时代"},"k":"c","wiki":"Vedic period"},
     {"s":-600,"e":-322,"n":{"en":"Mahajanapadas","zh":"十六雄国"},"k":"d","wiki":"Mahajanapadas"},
     {"s":-322,"e":-185,"n":{"en":"Maurya Empire","zh":"孔雀王朝"},"k":"s","wiki":"Maurya Empire"},
     {"s":-185,"e":320,"n":{"en":"Post-Mauryan kingdoms","zh":"后孔雀诸国"},"k":"d","wiki":"Middle kingdoms of India"},
@@ -92,8 +92,8 @@ window.WORLDLINES.polities = {
     {"s":1945,"e":2026,"n":{"en":"Republic of Indonesia","zh":"印度尼西亚共和国"},"k":"s","wiki":"Indonesia"}
   ],
   "iraq": [
-    {"s":-6500,"e":-4000,"n":{"en":"Ubaid period","zh":"欧贝德时期"},"k":"c","wiki":"Ubaid period"},
-    {"s":-4000,"e":-3100,"n":{"en":"Uruk period","zh":"乌鲁克时期"},"k":"c","wiki":"Uruk period"},
+    {"s":-6500,"e":-3800,"n":{"en":"Ubaid period","zh":"欧贝德时期"},"k":"c","wiki":"Ubaid period"},
+    {"s":-3800,"e":-3100,"n":{"en":"Uruk period","zh":"乌鲁克时期"},"k":"c","wiki":"Uruk period"},
     {"s":-3100,"e":-2334,"n":{"en":"Sumerian city-states","zh":"苏美尔城邦"},"k":"d","wiki":"Early Dynastic Period (Mesopotamia)"},
     {"s":-2334,"e":-2154,"n":{"en":"Akkadian Empire","zh":"阿卡德帝国"},"k":"s","wiki":"Akkadian Empire"},
     {"s":-2112,"e":-2004,"n":{"en":"Third Dynasty of Ur","zh":"乌尔第三王朝"},"k":"s","wiki":"Third Dynasty of Ur"},
@@ -143,8 +143,8 @@ window.WORLDLINES.polities = {
   ],
   "iran": [
     {"s":-3200,"e":-2700,"n":{"en":"Proto-Elamite","zh":"原始埃兰"},"k":"c","wiki":"Proto-Elamite (period)"},
-    {"s":-2700,"e":-646,"n":{"en":"Elam","zh":"埃兰"},"k":"s","wiki":"Elam"},
-    {"s":-646,"e":-550,"n":{"en":"Median kingdom","zh":"米底王国"},"k":"s","wiki":"Medes"},
+    {"s":-2700,"e":-678,"n":{"en":"Elam","zh":"埃兰"},"k":"s","wiki":"Elam"},
+    {"s":-678,"e":-550,"n":{"en":"Media & late Elam","zh":"米底与晚期埃兰"},"k":"d","wiki":"Medes"},
     {"s":-550,"e":-330,"n":{"en":"Achaemenid Persia","zh":"阿契美尼德王朝"},"k":"s","wiki":"Achaemenid Empire"},
     {"s":-330,"e":-247,"n":{"en":"Alexander & Seleucids","zh":"亚历山大与塞琉古"},"k":"f","wiki":"Seleucid Empire"},
     {"s":-247,"e":224,"n":{"en":"Parthian Empire","zh":"帕提亚帝国"},"k":"s","wiki":"Parthian Empire"},
@@ -199,8 +199,8 @@ window.WORLDLINES.polities = {
   ],
   "italy": [
     {"s":-6000,"e":-900,"n":{"en":"Neolithic–Bronze Age","zh":"新石器与青铜时代"},"k":"c","wiki":"Prehistoric Italy"},
-    {"s":-900,"e":-753,"n":{"en":"Villanovan culture","zh":"维拉诺瓦文化"},"k":"c","wiki":"Villanovan culture"},
-    {"s":-753,"e":-509,"n":{"en":"Etruscans & early Rome","zh":"伊特鲁里亚与罗马"},"k":"d","wiki":"Etruscan civilization"},
+    {"s":-900,"e":-720,"n":{"en":"Villanovan culture","zh":"维拉诺瓦文化"},"k":"c","wiki":"Villanovan culture"},
+    {"s":-720,"e":-509,"n":{"en":"Etruscans & early Rome","zh":"伊特鲁里亚与罗马"},"k":"d","wiki":"Etruscan civilization"},
     {"s":-509,"e":-27,"n":{"en":"Roman Republic","zh":"罗马共和国"},"k":"s","wiki":"Roman Republic"},
     {"s":-27,"e":476,"n":{"en":"Roman Empire","zh":"罗马帝国"},"k":"s","wiki":"Roman Empire"},
     {"s":476,"e":553,"n":{"en":"Odoacer & Ostrogoths","zh":"奥多亚克与东哥特"},"k":"s","wiki":"Ostrogothic Kingdom"},
@@ -300,7 +300,7 @@ window.WORLDLINES.polities = {
     {"s":-400,"e":100,"n":{"en":"Proto-Aksumite","zh":"原阿克苏姆"},"k":"c","wiki":"Kingdom of Aksum"},
     {"s":100,"e":960,"n":{"en":"Kingdom of Aksum","zh":"阿克苏姆王国"},"k":"s","wiki":"Kingdom of Aksum"},
     {"s":1137,"e":1270,"n":{"en":"Zagwe dynasty","zh":"扎格维王朝"},"k":"s","wiki":"Zagwe dynasty"},
-    {"s":1270,"e":1769,"n":{"en":"Solomonic dynasty","zh":"所罗门王朝"},"k":"s","wiki":"Solomonic dynasty"},
+    {"s":1270,"e":1769,"n":{"en":"Early Solomonic & Gondar","zh":"所罗门王朝前期与贡德尔"},"k":"s","wiki":"Solomonic dynasty"},
     {"s":1769,"e":1855,"n":{"en":"Zemene Mesafint","zh":"王子时代"},"k":"d","wiki":"Zemene Mesafint"},
     {"s":1855,"e":1936,"n":{"en":"Ethiopian Empire","zh":"埃塞俄比亚帝国"},"k":"s","wiki":"Ethiopian Empire"},
     {"s":1936,"e":1941,"n":{"en":"Italian occupation","zh":"意大利占领"},"k":"f","wiki":"Italian East Africa"},
@@ -310,7 +310,7 @@ window.WORLDLINES.polities = {
   ],
   "mali": [
     {"s":-2000,"e":-250,"n":{"en":"Tichitt tradition","zh":"提希特文化"},"k":"c","wiki":"Dhar Tichitt"},
-    {"s":-250,"e":300,"n":{"en":"Jenne-Jeno","zh":"杰内-杰诺"},"k":"c","wiki":"Djenné-Djenno"},
+    {"s":-250,"e":300,"n":{"en":"Early Middle Niger towns","zh":"中尼日尔河早期城镇"},"k":"c","wiki":"Djenné-Djenno"},
     {"s":300,"e":1100,"n":{"en":"Ghana Empire","zh":"加纳帝国"},"k":"s","wiki":"Ghana Empire"},
     {"s":1100,"e":1235,"n":{"en":"Sosso & successors","zh":"索索与诸国"},"k":"d","wiki":"Sosso Empire"},
     {"s":1235,"e":1468,"n":{"en":"Mali Empire","zh":"马里帝国"},"k":"s","wiki":"Mali Empire"},
