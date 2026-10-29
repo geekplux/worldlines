@@ -56,7 +56,7 @@ Object.assign(window.WORLDLINES, {
     { id: "africa", code: "AF", color: "#2f7d4a", name: { en: "Sub-Saharan Africa", zh: "撒哈拉以南非洲" } },
     { id: "americas", code: "AM", color: "#7a4e8c", name: { en: "The Americas", zh: "美洲" } },
     { id: "central-asia", code: "CA", color: "#9a3b5a", name: { en: "Central Asia & Steppe", zh: "中亚与草原" } },
-    { id: "oceania", code: "OC", color: "#1f8a8a", name: { en: "Oceania", zh: "大洋洲" } }
+    { id: "oceania", code: "OC", color: "#1c8080", name: { en: "Oceania", zh: "大洋洲" } }
   ],
 
   /* Places are today's countries or historic heartlands, the unit for country-level comparison. */
@@ -96,7 +96,7 @@ Object.assign(window.WORLDLINES, {
     { id: "trade", color: "#e07b1a", name: { en: "Trade & movement", zh: "贸易与迁移" } },
     { id: "conflict", color: "#141414", name: { en: "Conflict", zh: "冲突" } },
     { id: "society", color: "#2f7d4a", name: { en: "Society & rights", zh: "社会与权利" } },
-    { id: "environment", color: "#1f8a8a", name: { en: "Land & climate", zh: "土地与气候" } }
+    { id: "environment", color: "#1c8080", name: { en: "Land & climate", zh: "土地与气候" } }
   ],
 
   /* Polity kinds, drawn differently on the long view */
