@@ -336,8 +336,8 @@ window.WORLDLINES.polities = {
   "mexico": [
     {"s":-7000,"e":-1200,"n":{"en":"Archaic farmers","zh":"古代期农人"},"k":"c","wiki":"Guilá Naquitz Cave"},
     {"s":-1200,"e":-400,"n":{"en":"Olmec","zh":"奥尔梅克"},"k":"c","wiki":"Olmecs"},
-    {"s":-400,"e":250,"n":{"en":"Late Formative states","zh":"前古典晚期诸邦"},"k":"d","wiki":"Monte Albán"},
-    {"s":250,"e":650,"n":{"en":"Teotihuacan & Maya","zh":"特奥蒂瓦坎与玛雅"},"k":"d","wiki":"Teotihuacan"},
+    {"s":-400,"e":200,"n":{"en":"Late Formative states","zh":"前古典晚期诸邦"},"k":"d","wiki":"Monte Albán"},
+    {"s":200,"e":650,"n":{"en":"Teotihuacan & Maya","zh":"特奥蒂瓦坎与玛雅"},"k":"d","wiki":"Teotihuacan"},
     {"s":650,"e":950,"n":{"en":"Epiclassic states","zh":"后古典早期诸邦"},"k":"d","wiki":"Xochicalco"},
     {"s":950,"e":1150,"n":{"en":"Toltec Tula","zh":"托尔特克"},"k":"s","wiki":"Toltec"},
     {"s":1150,"e":1428,"n":{"en":"Postclassic states","zh":"后古典诸邦"},"k":"d","wiki":"Mesoamerican chronology"},
