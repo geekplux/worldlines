@@ -99,7 +99,7 @@ CI runs the same check on every push and pull request.
 
 ## Deployment
 
-The site is served at **https://worldlines.geekplux.com/** by **Cloudflare Workers Static Assets** with Workers Builds (Git integration). Every push to `master` runs `npx wrangler deploy`, which uploads `public/` as configured in `wrangler.jsonc`. There is no build command, and nothing outside `public/` (README, scripts, `.github`) is uploaded. The Worker name `worldlines` must match the Worker in the Cloudflare dashboard. The old `worldlines.geekplux.org` still serves the same Worker as a secondary domain; canonical tags, the sitemap and every link use `.com`.
+The site is served at **https://worldlines.geekplux.com/** by **Cloudflare Workers Static Assets** with Workers Builds (Git integration). Every push to `master` runs `npx wrangler deploy`, which uploads `public/` as configured in `wrangler.jsonc`. There is no build command, and nothing outside `public/` (README, scripts, `.github`) is uploaded. The Worker name `worldlines` must match the Worker in the Cloudflare dashboard. The old `worldlines.geekplux.org` now redirects (301) to `.com`; canonical tags, the sitemap and every link use `.com`.
 
 `public/_headers` caches `assets/` for a year. That is safe because every reference to those files carries a content hash (`?v=…`) written by `scripts/stamp-assets.mjs`; `check-data` fails while a stamp is stale. `index.html` and `data/` are revalidated on every visit.
 
@@ -113,7 +113,7 @@ Besides page views, the site sends `select_content` events for the chapter, even
 
 ## Search engines
 
-The page has a descriptive title and description in each language, a canonical URL per language with `hreflang` alternates (`/` for English, `/?lang=zh` for Chinese), Open Graph and Twitter cards (`og.png`), WebSite JSON-LD, `robots.txt` and `sitemap.xml`. A `<noscript>` block lists the eight chapters for crawlers that do not run JavaScript. The counts quoted in these tags are checked against the data by `check-data`.
+The page has a descriptive title and description in each language, a canonical URL per language with `hreflang` alternates (`/` for English, `/?lang=zh` for Chinese), Open Graph and Twitter cards (`og.png`, with image type and alt text), WebSite and WebPage JSON-LD, `robots.txt` and `sitemap.xml`. A `<noscript>` block lists the eight chapters for crawlers that do not run JavaScript. The counts quoted in these tags are checked against the data by `check-data`.
 
 ## Caveats
 

@@ -1,7 +1,7 @@
 # Worldlines: working conventions
 
 A static, bilingual (EN/中文) atlas of world history: 8 chapters, 26 places, their polities and about 220 events.
-Repository: github.com/geekplux/worldlines. Live: https://worldlines.geekplux.com/ (primary; `worldlines.geekplux.org` is a secondary domain, so
+Repository: github.com/geekplux/worldlines. Live: https://worldlines.geekplux.com/ (primary; `worldlines.geekplux.org` 301s to it, and
 canonical, sitemap and links always use `.com`). Sister projects: Art-isms, Dialectica.
 Read README.md for the data model and file layout. These are the rules that are easy to break.
 
@@ -49,8 +49,9 @@ Read README.md for the data model and file layout. These are the rules that are 
 ## Before every commit
 
 1. `node scripts/stamp-assets.mjs` if `public/assets/app.js` or `styles.css` changed.
-2. `node scripts/check-data.mjs` (CI runs it too; it fails on stale stamps and on counts that drift from the data).
-3. Open the page at desktop width and at 390px, in both languages.
+2. Bump `<lastmod>` in `public/sitemap.xml` when content in `public/data/` or the page copy changes.
+3. `node scripts/check-data.mjs` (CI runs it too; it fails on stale stamps and on counts that drift from the data).
+4. Open the page at desktop width and at 390px, in both languages.
 
 ## Caching and deployment
 
