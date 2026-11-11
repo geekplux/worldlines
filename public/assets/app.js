@@ -7,9 +7,12 @@
   const MIN_YEAR = -13000;
   const byId = (list) => Object.fromEntries(list.map((x) => [x.id, x]));
   const CH = D.chapters, RG = D.regions, PL = D.places, TH = D.themes, KD = D.kinds;
-  const EV = D.events.slice().sort((a, b) => a.year - b.year);
+  /* Tier 1 (events.js) loads with the page; tiers 2 and 3 (events-more.js) arrive after the first render */
+  let EV = D.events.map((e) => ({ ...e, tier: e.tier || 1 })).sort((a, b) => a.year - b.year);
   const POL = D.polities || {};
-  const CHB = byId(CH), RGB = byId(RG), PLB = byId(PL), THB = byId(TH), KDB = byId(KD), EVB = byId(EV);
+  const CHB = byId(CH), RGB = byId(RG), PLB = byId(PL), THB = byId(TH), KDB = byId(KD);
+  let EVB = byId(EV), KIDS = {};
+  const TOP_COUNT = D.events.length;
   const POL_COUNT = Object.values(POL).reduce((n, l) => n + l.length, 0);
 
   const UI = {
@@ -55,7 +58,7 @@
       fProjT: "The project",
       fProj: "A static site with no build step: HTML, CSS and plain JavaScript, with all content in bilingual data files. A sibling of <a href=\"https://artisms.geekplux.com/\">Art-isms</a> and <a href=\"https://dialectica.geekplux.com/\">Dialectica</a>. Corrections are welcome on <a href=\"https://github.com/geekplux/worldlines\">GitHub</a>.",
       consentText: "This site uses Google Analytics to count visits. Allow it to set analytics cookies?", consentYes: "Accept", consentNo: "Decline", cookieSettings: "Cookie settings",
-      detailTop: "Event · connections", why: "Why it matters", frame: "Historical frame", meanwhileH: "Meanwhile, elsewhere…", ruledH: (y) => `Who ruled where in ${y}`,
+      detailTop: "Event · connections", why: "Why it matters", partOf: "Part of", insideH: (n) => `Inside it: ${n} events`, frame: "Historical frame", meanwhileH: "Meanwhile, elsewhere…", ruledH: (y) => `Who ruled where in ${y}`,
       readWiki: "Read on Wikipedia ↗", freeze: (y) => `Freeze ${y} ■`, source: "Image", plate: "No free image for this event",
       searchHelp: "Try “printing”, “empire”, “silver”, a dynasty or a country. Press Esc to close.", searchPh: "Search history…",
       kEvent: "Event", kPlace: "Country", kState: "State",
@@ -107,7 +110,7 @@
       fProjT: "关于项目",
       fProj: "一个无需构建的静态网站：HTML、CSS 与原生 JavaScript，全部内容存放在中英双语数据文件中。它是 <a href=\"https://artisms.geekplux.com/\">艺术流派志</a> 与 <a href=\"https://dialectica.geekplux.com/\">思辨谱</a> 的姊妹项目。欢迎在 <a href=\"https://github.com/geekplux/worldlines\">GitHub</a> 上提出修订。",
       consentText: "本站使用 Google Analytics 统计访问量。是否允许设置统计 Cookie？", consentYes: "接受", consentNo: "拒绝", cookieSettings: "Cookie 设置",
-      detailTop: "事件 · 关联", why: "为何重要", frame: "历史框架", meanwhileH: "与此同时，在别处……", ruledH: (y) => `${y}，谁统治着哪里`,
+      detailTop: "事件 · 关联", why: "为何重要", partOf: "属于", insideH: (n) => `其中的 ${n} 个事件`, frame: "历史框架", meanwhileH: "与此同时，在别处……", ruledH: (y) => `${y}，谁统治着哪里`,
       readWiki: "在维基百科阅读 ↗", freeze: (y) => `定格在${y} ■`, source: "图片", plate: "此事件暂无自由版权图片",
       searchHelp: "试试“印刷”“帝国”“白银”“独立”、一个王朝或一个国家。按 Esc 关闭。", searchPh: "搜索历史……",
       kEvent: "事件", kPlace: "国家", kState: "政权",
@@ -173,6 +176,8 @@
   let year = 1492;
   let selected = null;
   let lastFocus = null;
+  /* A deep-linked event that is in events-more.js, waiting for that file; cleared once the visitor acts */
+  let pendingEv = null;
 
   const t = (k) => (UI[lang][k] ?? UI.en[k] ?? k);
   const p = (o) => (o ? (o[lang] ?? o.en) : "");
@@ -312,7 +317,7 @@
     $$(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
     $("#gh-star").title = t("starTitle");
     $$("a[data-sister]").forEach((a) => { a.href = `https://${a.dataset.sister}.geekplux.com/${lang === "zh" ? "?lang=zh" : ""}`; });
-    $("#stats").textContent = UI[lang].stats(EV.length, POL_COUNT);
+    $("#stats").textContent = UI[lang].stats(TOP_COUNT, POL_COUNT);
     $("#search-input").placeholder = t("searchPh");
   }
 
@@ -356,15 +361,27 @@
     return out;
   }
 
-  const CARD = 176, GAP = 14, ROWH = 100;
+  const CARD = 176, CARD2 = 148, GAP = 14, SLOT = 62, RAIL = 22;
+  /* How many tiers get a card: zooming in (or comparing countries, where each lane is one place) brings in
+     finer tiers; the rest stay as ticks on the lane's rail, so density is visible without a filter to set */
+  const cardTier = () => Math.min(3, (ZOOMS[zoomIdx] >= 3 ? 3 : ZOOMS[zoomIdx] >= 1.5 ? 2 : 1) + (mode === "places" ? 1 : 0));
+  /* The timeline always fills the window. The smallest step fits the whole chapter into the space beside the
+     lane labels; 1× and up scale the larger of that space and 1540px */
+  function trackWidth() {
+    const lw = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--label-w")) || 0;
+    return Math.floor(($("#tl-scroll").clientWidth || 0) - lw - 6);
+  }
+  let lastTrackW = 0;
   function renderAtlas() {
-    const c = CH[chIdx], zoom = ZOOMS[zoomIdx];
-    const CW = Math.round(1540 * zoom);
+    const c = CH[chIdx], zoom = ZOOMS[zoomIdx], maxTier = cardTier();
+    lastTrackW = trackWidth();
+    const fitW = Math.max(320, lastTrackW), CW = zoom < 1 ? fitW : Math.round(Math.max(1540, fitW) * zoom);
     const X = (y) => clamp((y - c.start) / (c.end - c.start), 0, 1) * CW;
     const stage = $("#stage");
     stage.style.setProperty("--cw", CW + "px");
     $("#zoom-val").textContent = zoom + "×";
-    $$(".zoom button").forEach((b) => { b.disabled = b.dataset.zoom < 0 ? zoomIdx === 0 : zoomIdx === ZOOMS.length - 1; });
+    /* Zooming out to "fit" changes nothing on a window already wider than 1540px, so that step is off there */
+    $$(".zoom button").forEach((b) => { b.disabled = b.dataset.zoom < 0 ? zoomIdx === 0 || (zoomIdx === 1 && fitW >= 1540) : zoomIdx === ZOOMS.length - 1; });
 
     const ticks = niceTicks(c.start, c.end, 9 * zoom);
     let h = `<div class="axis-row"><div class="axis-corner">${t("axisCorner")(mode)}</div><div class="axis-track">`;
@@ -377,17 +394,24 @@
     lanes().forEach((lane) => {
       const evs = EV.filter((e) => e.chapter === c.id && inLane(e, lane));
       const top = lane.kind === "place" ? 40 : 18;
-      const rows = [];
-      const placed = evs.map((e) => {
+      /* Pack cards on a grid of SLOT-high bands: a tier-1 card takes two bands, a compact card one. Tier 1 is
+         placed first, so it keeps the top; finer cards fill the free space below and between, left to right */
+      const bands = [];
+      const fits = (k, a, b) => (bands[k] || []).every(([u, v]) => b <= u || a >= v);
+      const pack = (list, w, span) => list.map((e) => {
         const x = X(e.year), xe = e.end ? X(Math.min(e.end, c.end)) : x;
-        const left = clamp(x - 18, 2, CW - CARD - 2);
-        const a = Math.min(left, x), b = Math.max(left + CARD, xe) + GAP;
-        let r = rows.findIndex((edge) => edge <= a);
-        if (r < 0) { r = rows.length; rows.push(0); }
-        rows[r] = b;
-        return { e, x, xe, left, r };
+        const left = clamp(x - 18, 2, CW - w - 2);
+        const a = Math.min(left, x), b = Math.max(left + w, xe) + GAP;
+        let k = 0;
+        while (![...Array(span).keys()].every((j) => fits(k + j, a, b))) k++;
+        for (let j = 0; j < span; j++) (bands[k + j] = bands[k + j] || []).push([a, b]);
+        return { e, x, xe, left, k };
       });
-      const height = Math.max(lane.kind === "place" ? 124 : 104, top + Math.max(1, rows.length) * ROWH + 10);
+      const major = pack(evs.filter((e) => e.tier === 1), CARD, 2);
+      const minor = pack(evs.filter((e) => e.tier > 1 && e.tier <= maxTier), CARD2, 1);
+      const ticks = evs.filter((e) => e.tier > maxTier);
+      const rail = ticks.length ? RAIL : 0;
+      const height = Math.max(lane.kind === "place" ? 124 : 104, top + Math.max(2, bands.length) * SLOT + 10 + rail);
       let strip = "";
       if (lane.kind === "place") {
         strip = `<div class="pstrip" style="${regionVars(lane.r)}">` + (POL[lane.id] || []).map((q, i) => {
@@ -396,25 +420,30 @@
           return `<span class="pblk k-${q.k}${i % 2 ? " alt" : ""}" style="left:${l}px;width:${w}px" title="${esc(p(q.n))} · ${esc(span(q.s, q.e))}">${w > 34 ? esc(p(q.n)) : ""}</span>`;
         }).join("") + `</div>`;
       }
-      const cards = placed.map(({ e, x, xe, left, r }) => {
-        const y0 = top + r * ROWH;
+      const card = ({ e, x, xe, left }, y0, compact) => {
         const tc = THB[e.theme].color;
-        const where = mode === "regions" ? (e.place ? p(PLB[e.place].name) : "") : (e.place && e.place !== lane.id ? "↗ " + p(PLB[e.place].name) : "");
+        const where = compact ? "" : mode === "regions" ? (e.place ? p(PLB[e.place].name) : "") : (e.place && e.place !== lane.id ? "↗ " + p(PLB[e.place].name) : "");
         const dim = theme !== "all" && e.theme !== theme ? " dim" : "";
         return (e.end && xe - x > 3 ? `<span class="span${dim}" style="left:${x}px;width:${xe - x}px;top:${y0 + 1}px;--tc:${tc}"></span>` : "") +
-          `<button type="button" class="ev${dim}${selected === e.id ? " sel" : ""}" data-ev="${e.id}" data-theme="${e.theme}" style="left:${left}px;top:${y0 + 12}px;--tc:${tc}" aria-label="${esc(p(e.title))}, ${esc(p(e.date))}">
+          `<button type="button" class="ev${compact ? " t" + e.tier : ""}${dim}${selected === e.id ? " sel" : ""}" data-ev="${e.id}" data-theme="${e.theme}" style="left:${left}px;top:${y0 + (compact ? 6 : 12)}px;--tc:${tc}" aria-label="${esc(p(e.title))}, ${esc(p(e.date))}">
             <span class="pin" style="left:${x - left - 1}px"></span>
             <span class="yr">${esc(p(e.date))}</span>
             <span class="tt">${esc(p(e.title))}</span>
             ${where ? `<span class="pl">${esc(where)}</span>` : ""}
           </button>`;
-      }).join("");
+      };
+      const cards = major.map((o) => card(o, top + o.k * SLOT, false)).join("") +
+        minor.map((o) => card(o, top + o.k * SLOT, true)).join("");
+      /* Finer events not shown as cards: one tick each on the rail at the foot of the lane. Out of the tab
+         order (search and the detail panel reach them by keyboard), but named for screen readers */
+      const tickHtml = ticks.length ? `<div class="rail">` + ticks.map((e) =>
+        `<button type="button" class="tk${theme !== "all" && e.theme !== theme ? " dim" : ""}${selected === e.id ? " sel" : ""}" tabindex="-1" data-ev="${e.id}" style="left:${X(e.year)}px;--tc:${THB[e.theme].color}" title="${esc(p(e.date))}: ${esc(p(e.title))}" aria-label="${esc(p(e.title))}, ${esc(p(e.date))}"></button>`).join("") + `</div>` : "";
       const label = lane.kind === "region"
         ? `<span class="code">${lane.r.code}</span><h3>${esc(p(lane.name))}</h3>`
         : `<span class="code">${esc(p(lane.r.name))}</span><h3>${esc(p(lane.name))}</h3><button type="button" class="rm" data-rm="${lane.id}" aria-label="${esc(t("remove"))} ${esc(p(lane.name))}">×</button>`;
       h += `<div class="lane" style="${regionVars(lane.r)}">
         <div class="lane-label">${label}</div>
-        <div class="track" style="height:${height}px">${strip}${cards || `<span class="empty-lane">${t("emptyLane")}</span>`}</div>
+        <div class="track" style="height:${height}px">${strip}${cards || (ticks.length ? "" : `<span class="empty-lane">${t("emptyLane")}</span>`)}${tickHtml}</div>
       </div>`;
     });
     stage.innerHTML = h;
@@ -445,8 +474,8 @@
     const row = (pl) => {
       const r = RGB[pl.region], list = POL[pl.id] || [], isIn = cmp.includes(pl.id), open = isIn || longMode === "open";
       const blocks = list.map((q, i) => `<span class="lv-blk k-${q.k}" data-pi="${i}" style="left:${pct(q.s)};width:calc(${pct(q.e)} - ${pct(q.s)})">${open ? `<span>${esc(p(q.n))}</span>` : ""}</span>`).join("");
-      const dots = open ? EV.filter((e) => e.place === pl.id).map((e) =>
-        `<button type="button" class="lv-dot${theme !== "all" && e.theme !== theme ? " dim" : ""}" data-ev="${e.id}" style="left:${pct(e.year)}" aria-label="${esc(p(e.title))}, ${esc(p(e.date))}"></button>`).join("") : "";
+      const dots = open ? EV.filter((e) => e.place === pl.id && e.tier <= 2).map((e) =>
+        `<button type="button" class="lv-dot${e.tier > 1 ? " t2" : ""}${theme !== "all" && e.theme !== theme ? " dim" : ""}" data-ev="${e.id}" style="left:${pct(e.year)}" aria-label="${esc(p(e.title))}, ${esc(p(e.date))}"></button>`).join("") : "";
       return `<div class="lv-row${open ? " open" : ""}${isIn ? " in" : ""}" data-place="${pl.id}" style="${regionVars(r)}">
         <button type="button" class="lv-name" data-toggle="${pl.id}" aria-pressed="${isIn}"><span class="sw"></span><span class="nm">${esc(p(pl.name))}</span><span class="pin" aria-hidden="true">${isIn ? "−" : "+"}</span></button>
         <div class="lv-track">${blocks}${dots}</div></div>`;
@@ -558,6 +587,8 @@
   }
   function renderSlice() {
     const w = windowFor(year), c = chapterOf(year);
+    /* Nearest first within a tier, the larger turning points before the finer ones */
+    const byNear = (a, b) => a.tier - b.tier || Math.abs(a.year - year) - Math.abs(b.year - year);
     const big = year >= NOW ? (lang === "zh" ? "今天" : "Today") : year < 0 ? Math.abs(year).toLocaleString("en-US") : String(year);
     const era = year >= NOW ? "" : year < 0 ? t("bce") : t("ce");
     $("#year-big").innerHTML = `<span class="n">${esc(big)}</span><small>${esc(era)}${era ? " · " : ""}${esc(p(c.title))}</small>`;
@@ -580,11 +611,11 @@
       } else main = `<p class="kind">—</p><p class="pn none">${esc(t("noState"))}</p><p class="yrs">${esc(t("noStateBody"))}</p>`;
       const gap = !q && (prev || next) ? { s: prev ? prev.e : year - 1, e: next ? next.s : year + 1 } : null;
       const evs = EV.filter((e) => (e.place === pl.id || (e.also || []).includes(pl.id)) && (Math.abs(e.year - year) <= w || (e.end && e.year <= year && e.end >= year)))
-        .sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year)).slice(0, 2);
+        .sort(byNear).slice(0, 2);
       let evHtml;
       if (evs.length) evHtml = evs.map((e) => `<li><button type="button" data-ev="${e.id}"><span>${esc(p(e.date))}</span><b>${esc(p(e.title))}</b></button></li>`).join("");
       else {
-        const n = EV.filter((e) => e.place === pl.id).sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year))[0];
+        const n = EV.filter((e) => e.place === pl.id && e.tier <= 2).sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year))[0];
         evHtml = n ? `<li class="far"><button type="button" data-ev="${n.id}"><span>${esc(t("nearest"))} · ${esc(p(n.date))}</span><b>${esc(p(n.title))}</b></button></li>` : "";
       }
       return `<article class="sc" style="${regionVars(r)}">
@@ -596,8 +627,8 @@
     $("#slice-sum").innerHTML = t("sum")(fmtYear(year), pls.length) + ["s", "d", "f", "c", "none"].filter((k) => tally[k]).map((k) =>
       `<span><i class="k-${k}"></i><b>${tally[k]}</b> ${esc(t("kindShort")[k])}</span>`).join("");
 
-    const near = EV.filter((e) => Math.abs(e.year - year) <= w || (e.end && e.year <= year && e.end >= year))
-      .sort((a, b) => Math.abs(a.year - year) - Math.abs(b.year - year)).slice(0, 10);
+    const near = EV.filter((e) => e.tier <= 2 && (Math.abs(e.year - year) <= w || (e.end && e.year <= year && e.end >= year)))
+      .sort(byNear).slice(0, 10);
     $("#mw-lbl").textContent = t("meanwhile")(w);
     $("#slice-world").innerHTML = near.length ? near.map((e) =>
       `<button type="button" class="mw" data-ev="${e.id}" style="--c:${RGB[e.region].color}"><small>${esc(p(e.date))} · ${esc(e.place ? p(PLB[e.place].name) : p(RGB[e.region].name))}</small><b>${esc(p(e.title))}</b></button>`).join("") : `<p class="mw-none">${esc(t("nothingNear"))}</p>`;
@@ -621,20 +652,23 @@
   function openDetail(id, opts = {}) {
     const e = EVB[id];
     if (!e) return;
+    if (!opts.quiet) pendingEv = null;
     if (!detail.classList.contains("open")) lastFocus = document.activeElement;
     if (selected !== id) track("select_content", { content_type: "event", item_id: id });
     selected = id;
     const ci = CH.findIndex((c) => c.id === e.chapter);
     if (ci !== chIdx) selectChapter(ci, { keepScroll: true });
-    else $$(".ev.sel").forEach((b) => b.classList.remove("sel"));
-    const card = $(`.ev[data-ev="${id}"]`);
+    else $$(".ev.sel, .tk.sel").forEach((b) => b.classList.remove("sel"));
+    const card = $(`#stage [data-ev="${id}"]`);
     if (card) {
       card.classList.add("sel");
       if (opts.reveal) reveal(card);
     }
     const c = CH[ci], r = RGB[e.region], w = Math.max(18, (c.end - c.start) * 0.065);
-    let par = EV.filter((x) => x.chapter === e.chapter && x.id !== e.id && x.region !== e.region && Math.abs(x.year - e.year) <= w);
-    if (par.length < 3) par = EV.filter((x) => x.chapter === e.chapter && x.id !== e.id && x.region !== e.region);
+    let par = EV.filter((x) => x.tier <= 2 && x.chapter === e.chapter && x.id !== e.id && x.region !== e.region && Math.abs(x.year - e.year) <= w);
+    if (par.length < 3) par = EV.filter((x) => x.tier === 1 && x.chapter === e.chapter && x.id !== e.id && x.region !== e.region);
+    const parent = e.parent && EVB[e.parent], kids = (KIDS[e.id] || []).slice().sort((a, b) => a.tier - b.tier || a.year - b.year);
+    const where = (x) => x.place ? p(PLB[x.place].name) : p(RGB[x.region].name);
     const seen = new Set();
     par = par.sort((a, b) => Math.abs(a.year - e.year) - Math.abs(b.year - e.year)).filter((x) => (seen.has(x.region) ? false : seen.add(x.region))).slice(0, 5);
     const ruled = cmp.map((pid) => ({ pid, ...polityAt(pid, e.year) }));
@@ -642,10 +676,11 @@
 
     $("#detail-body").innerHTML = `
       <p class="d-date">${esc(p(e.date))} · ${esc(p(r.name))}${e.place ? " · " + esc(p(PLB[e.place].name)) : ""}</p>
+      ${parent ? `<p class="d-parent">${esc(t("partOf"))} <button type="button" data-ev="${parent.id}">${esc(p(parent.title))}</button></p>` : ""}
       <h2 id="d-title">${esc(p(e.title))}</h2>
       <figure class="d-fig" id="d-fig">${plateSvg(e.id, r.color)}<img alt=""><figcaption>${esc(t("plate"))}</figcaption></figure>
       <p class="d-sum">${esc(p(e.summary))}</p>
-      <div class="fact"><span class="micro">${esc(t("why"))}</span><p>${esc(p(e.why))}</p></div>
+      ${e.why ? `<div class="fact"><span class="micro">${esc(t("why"))}</span><p>${esc(p(e.why))}</p></div>` : ""}
       <div class="fact"><span class="micro">${esc(t("frame"))}</span><p>${esc(p(c.title))} · ${esc(p(c.range))}</p></div>
       <div class="stamps">
         <button type="button" class="stamp" data-theme="${e.theme}" style="--c:${THB[e.theme].color}">${esc(p(THB[e.theme].name))}</button>
@@ -655,6 +690,7 @@
         <a href="${esc(readUrl(e))}" target="_blank" rel="noopener">${esc(t("readWiki"))}</a>
         <button type="button" data-freeze="${e.year}">${esc(t("freeze")(fmtAxis(e.year)))}</button>
       </div>
+      ${kids.length ? `<div class="d-sec"><h3>${esc(t("insideH")(kids.length))}</h3>${kids.map((x) => `<button type="button" class="par${x.tier > 2 ? " t3" : ""}" data-ev="${x.id}"><span>${esc(p(x.date))}<br>${esc(where(x))}</span><strong>${esc(p(x.title))}</strong></button>`).join("")}</div>` : ""}
       ${par.length ? `<div class="d-sec"><h3>${esc(t("meanwhileH"))}</h3>${par.map((x) => `<button type="button" class="par" data-ev="${x.id}"><span>${esc(p(x.date))}<br>${esc(x.place ? p(PLB[x.place].name) : p(RGB[x.region].name))}</span><strong>${esc(p(x.title))}</strong></button>`).join("")}</div>` : ""}
       ${ruled.length ? `<div class="d-sec"><h3>${esc(t("ruledH")(fmtAxis(e.year)))}</h3>${ruled.map(({ pid, q }) => `<div class="rule-row" style="--c:${placeRegion(pid).color}"><span class="sw"></span><span style="text-align:left;font:inherit;color:inherit"><b>${esc(p(PLB[pid].name))}</b> · ${q ? esc(p(q.n)) : esc(t("noState"))}</span><span>${q ? esc(span(q.s, q.e)) : ""}</span></div>`).join("")}</div>` : ""}`;
 
@@ -674,8 +710,11 @@
     }
     detail.classList.add("open");
     detail.setAttribute("aria-hidden", "false");
-    detail.scrollTop = 0;
-    $("#detail-close").focus({ preventScroll: true });
+    /* A quiet refresh (new data arrived) keeps the reader's place and focus in the panel */
+    if (!opts.quiet) {
+      detail.scrollTop = 0;
+      $("#detail-close").focus({ preventScroll: true });
+    }
     writeHash();
   }
   /* Bring a card into view: centred sideways in the space the panel leaves, and clear of the sticky bars */
@@ -689,18 +728,20 @@
     if (r.top < bars + 60 || r.bottom > innerHeight - 20) scrollBy({ top: r.top - bars - 120, behavior: smooth() });
   }
   function closeDetail() {
+    pendingEv = null;
     detail.classList.remove("open");
     detail.setAttribute("aria-hidden", "true");
     selected = null;
-    $$(".ev.sel").forEach((b) => b.classList.remove("sel"));
+    $$(".ev.sel, .tk.sel").forEach((b) => b.classList.remove("sel"));
     writeHash();
     if (lastFocus && typeof lastFocus.focus === "function" && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
   }
 
   /* ── Search ────────────────────────────────── */
   const search = $("#search");
+  const evEntry = (e) => ({ kind: "event", e, text: [e.title.en, e.title.zh, e.summary.en, e.summary.zh, e.tags, e.date.en, e.date.zh, RGB[e.region].name.en, RGB[e.region].name.zh, e.place ? PLB[e.place].name.en + " " + PLB[e.place].name.zh : ""].join(" ").toLowerCase() });
   const INDEX = [
-    ...EV.map((e) => ({ kind: "event", e, text: [e.title.en, e.title.zh, e.summary.en, e.summary.zh, e.tags, e.date.en, e.date.zh, RGB[e.region].name.en, RGB[e.region].name.zh, e.place ? PLB[e.place].name.en + " " + PLB[e.place].name.zh : ""].join(" ").toLowerCase() })),
+    ...EV.map(evEntry),
     ...PL.map((pl) => ({ kind: "place", pl, text: [pl.id, pl.name.en, pl.name.zh, RGB[pl.region].name.en, RGB[pl.region].name.zh].join(" ").toLowerCase() })),
     ...Object.entries(POL).flatMap(([pid, list]) => list.map((q) => ({ kind: "state", pid, q, text: [q.n.en, q.n.zh, q.wiki || "", PLB[pid] ? PLB[pid].name.en + " " + PLB[pid].name.zh : ""].join(" ").toLowerCase() })))
   ];
@@ -725,7 +766,7 @@
   const nameOf = (x) => (x.kind === "event" ? [x.e.title.en, x.e.title.zh] : x.kind === "place" ? [x.pl.name.en, x.pl.name.zh] : [x.q.n.en, x.q.n.zh]).join(" ").toLowerCase();
   function score(x, words) {
     const name = nameOf(x);
-    let s = x.kind === "place" ? 2 : x.kind === "state" ? 1 : 0;
+    let s = x.kind === "place" ? 2 : x.kind === "state" ? 1 : 1 - x.e.tier * 0.5;
     for (const w of words) {
       const re = new RegExp(`(^|[^a-z])${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
       if (re.test(name)) s += 10; else if (name.includes(w)) s += 6; else if (re.test(x.text)) s += 2;
@@ -739,7 +780,7 @@
     searchCount = matches.length;
     const hits = words.length
       ? matches.map((x) => ({ x, score: score(x, words) })).sort((a, b) => b.score - a.score).map((h) => h.x).slice(0, 40)
-      : EV.filter((e) => e.chapter === CH[chIdx].id).slice(0, 12).map((e) => ({ kind: "event", e }));
+      : EV.filter((e) => e.tier === 1 && e.chapter === CH[chIdx].id).slice(0, 12).map((e) => ({ kind: "event", e }));
     $("#search-results").innerHTML = hits.length ? hits.map((x) => {
       if (x.kind === "event") {
         const e = x.e;
@@ -838,7 +879,7 @@
   lv.addEventListener("mousemove", onLvMove);
   lv.addEventListener("mouseleave", () => { $("#lv-cursor").hidden = true; $("#lv-tip").hidden = true; });
   let resizeT = 0;
-  addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if ($("#lv")) fitLong(); if ($("#scrub-band")) renderSliceStatic(); }, 150); });
+  addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if (trackWidth() !== lastTrackW) { const sc = $("#tl-scroll"), f = sc.scrollLeft / Math.max(1, sc.scrollWidth); renderAtlas(); sc.scrollLeft = f * sc.scrollWidth; } if ($("#lv")) fitLong(); if ($("#scrub-band")) renderSliceStatic(); }, 150); });
 
   /* Drag the atlas sideways with a mouse */
   const sc = $("#tl-scroll");
@@ -861,7 +902,8 @@
   addEventListener("hashchange", () => {
     /* A plain in-page anchor (#atlas, #top…) only scrolls: keep the view as it is and put the state back in the address */
     if (!location.hash.includes("=")) { writeHash(); return; }
-    const id = readHash(); renderAll(); if (id && EVB[id]) openDetail(id, { reveal: true });
+    const id = readHash(); renderAll(); pendingEv = null;
+    if (id && EVB[id]) openDetail(id, { reveal: true }); else if (id) pendingEv = id;
   });
 
   /* Analytics consent (GA itself is set up in index.html, on the production domain only) */
@@ -901,4 +943,36 @@
   renderAll();
   pageView();
   if (startEv && EVB[startEv]) requestAnimationFrame(() => { $("#atlas").scrollIntoView(); openDetail(startEv, { reveal: true }); });
+  else if (startEv) pendingEv = startEv;
+
+  /* ── Finer events: tiers 2 and 3, fetched after the first render so they never delay it ── */
+  function addMore(list) {
+    const more = list.filter((e) => !EVB[e.id]);
+    if (!more.length) return;
+    EV = EV.concat(more).sort((a, b) => a.year - b.year);
+    EVB = byId(EV);
+    KIDS = {};
+    EV.forEach((e) => { if (e.parent) (KIDS[e.parent] = KIDS[e.parent] || []).push(e); });
+    INDEX.push(...more.map(evEntry));
+    const sc = $("#tl-scroll"), left = sc.scrollLeft;
+    renderAtlas(); sc.scrollLeft = left;
+    renderLong();
+    renderSlice();
+    if (selected) {
+      /* The panel body is rebuilt: put focus back on the same control, counted in document order */
+      const ctl = () => $$("#detail-body a, #detail-body button");
+      const at = ctl().indexOf(document.activeElement);
+      openDetail(selected, { quiet: true });
+      if (at >= 0) (ctl()[at] || $("#detail-close")).focus({ preventScroll: true });
+    } else if (pendingEv && EVB[pendingEv]) {
+      const id = pendingEv;
+      pendingEv = null;
+      if (CH[chIdx].id === EVB[id].chapter) { $("#atlas").scrollIntoView(); openDetail(id, { reveal: true }); }
+    }
+  }
+  const moreJs = document.createElement("script");
+  moreJs.src = "data/events-more.js";
+  moreJs.async = true;
+  moreJs.onload = () => addMore(D.moreEvents || []);
+  document.body.appendChild(moreJs);
 })();

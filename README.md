@@ -12,7 +12,7 @@ A bilingual (English / 中文) atlas of world history in the style of Mondrian. 
 - **Event panel.** Shows why an event mattered, "meanwhile, elsewhere…", who ruled each compared place that year, and the Wikipedia lead image (Commons files only).
 - **Search** (<kbd>/</kbd>) covers events, countries and states. <kbd>Alt</kbd>+<kbd>←</kbd>/<kbd>→</kbd> changes chapter, and <kbd>Esc</kbd> closes panels.
 - **Shareable links.** English is the default; `?lang=zh` opens the Chinese view (the browser's language is not used, and a visitor's own choice is remembered). The hash records the chapter, the open event, the year and the comparison set, e.g. `/?lang=zh#c=oceans&e=tokugawa&y=1603&cmp=china,japan,britain`.
-- **No build step.** Plain HTML, CSS and JavaScript, with the content in three data files. A sibling of [Art-isms](https://artisms.geekplux.com/) and [Dialectica](https://dialectica.geekplux.com/).
+- **No build step.** Plain HTML, CSS and JavaScript, with the content in four data files. A sibling of [Art-isms](https://artisms.geekplux.com/) and [Dialectica](https://dialectica.geekplux.com/).
 
 ## Sister atlases
 
@@ -44,7 +44,8 @@ public/                 everything that is deployed, and nothing else
   assets/app.js         rendering, comparison, year slice, i18n, routing, consent bar
   data/core.js          chapters, regions, places, themes, polity kinds, learning notes
   data/polities.js      who held each place, from first states to today
-  data/events.js        every hinge point on the atlas
+  data/events.js        every hinge point on the atlas (tier 1)
+  data/events-more.js   finer-grained events (tiers 2 and 3), loaded after the first render
   _headers              cache and security headers for Cloudflare
   robots.txt, sitemap.xml, og.png, favicon.svg, apple-touch-icon.png, favicon-48.png
 scripts/check-data.mjs  validates the data, the asset stamps and the counts quoted in the page
@@ -70,6 +71,20 @@ An **event** (`public/data/events.js`):
   "wiki": "Tokugawa shogunate"                               // English Wikipedia title, used for the image and "read more"
 }
 ```
+
+Finer-grained events live in `public/data/events-more.js` (`window.WORLDLINES.moreEvents`), in the same shape plus:
+
+```js
+{
+  "id": "normandy", "tier": 2,          // 1 = the hinge points in events.js; 2 = a national turning point; 3 = a notable event
+  "parent": "wwii",                     // optional: the larger event this one sits inside (its years must contain this one)
+  "iso": "1944-06-06", "isoEnd": null,  // optional: the day or month, when it is known (Julian dates before 1752 in Britain)
+  "qid": "Q16470",                      // the Wikidata item the date was checked against
+  "why": { … }                          // required for tiers 1 and 2, optional for tier 3
+}
+```
+
+`app.js` loads `events-more.js` after the first render. On the timeline, tier 1 events are full cards; finer tiers become compact cards as you zoom in (or compare countries) and otherwise show as ticks on the lane's rail. The detail panel lists an event's parent and children. The check validates both files.
 
 A **polity** (`public/data/polities.js`, keyed by place id):
 
