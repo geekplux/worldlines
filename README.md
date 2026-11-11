@@ -45,7 +45,7 @@ public/                 everything that is deployed, and nothing else
   data/core.js          chapters, regions, places, themes, polity kinds, learning notes
   data/polities.js      who held each place, from first states to today
   data/events.js        every hinge point on the atlas (tier 1)
-  data/events-more.js   finer-grained events (tiers 2 and 3), not loaded by the page yet
+  data/events-more.js   finer-grained events (tiers 2 and 3), loaded after the first render
   _headers              cache and security headers for Cloudflare
   robots.txt, sitemap.xml, og.png, favicon.svg, apple-touch-icon.png, favicon-48.png
 scripts/check-data.mjs  validates the data, the asset stamps and the counts quoted in the page
@@ -84,7 +84,7 @@ Finer-grained events live in `public/data/events-more.js` (`window.WORLDLINES.mo
 }
 ```
 
-The page does not load `events-more.js` yet, so the site shows tier 1 only; the check validates both files.
+`app.js` loads `events-more.js` after the first render. On the timeline, tier 1 events are full cards; finer tiers become compact cards as you zoom in (or compare countries) and otherwise show as ticks on the lane's rail. The detail panel lists an event's parent and children. The check validates both files.
 
 A **polity** (`public/data/polities.js`, keyed by place id):
 

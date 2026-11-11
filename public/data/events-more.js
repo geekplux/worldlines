@@ -1,7 +1,7 @@
 /* Worldlines finer-grained events: tier 2 (a national or regional turning point) and tier 3 (a notable
    event), with an optional parent (the larger event this one sits inside), an ISO date where the day or
-   month is known, and the Wikidata id (qid) the date was checked against. The page does not load this
-   file yet; scripts/check-data.mjs validates it with the rest. Every piece of text is { en, zh }. */
+   month is known, and the Wikidata id (qid) the date was checked against. app.js loads this file
+   after the first render; scripts/check-data.mjs validates it with the rest. Every piece of text is { en, zh }. */
 window.WORLDLINES = window.WORLDLINES || {};
 window.WORLDLINES.moreEvents = [
   {"id":"monte-verde","tier":3,"chapter":"origins","year":-12500,"date":{"en":"c. 12500 BCE","zh":"约公元前12500年"},"region":"americas","theme":"society","title":{"en":"Monte Verde camp","zh":"蒙特贝尔德营地"},"summary":{"en":"People camp beside a creek in southern Chile, leaving tent remains and plant foods that show humans reached far south very early.","zh":"人们在智利南部的一条小溪边扎营，留下的帐篷遗迹和植物性食物表明人类很早就到达了遥远的南方。"},"tags":"monte verde camp 蒙特贝尔德营地","wiki":"Monte Verde","qid":"Q975775","also":[]},
